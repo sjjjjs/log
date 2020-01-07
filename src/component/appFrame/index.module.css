@@ -1,0 +1,39 @@
+.frame {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.header {
+    background-color: red;
+    flex: 0 0 60px;
+}
+
+.content {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: stretch;
+}
+.main {
+    background-color: coral;
+    flex: 1 1 auto;
+}
+.side {
+    flex: 0 0 auto;
+    display: flex;
+}
+.sideMain {
+    background-color: burlywood;
+    flex: 1 1 auto;
+}
+.sideBar {
+    background-color: brown;
+    flex: 0 0 10px;
+    cursor: ew-resize;
+}
+.footer {
+    background-color: blueviolet;
+    flex: 0 0 20px;
+}
+
