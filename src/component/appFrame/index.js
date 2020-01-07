@@ -3,9 +3,46 @@ import styles from "./index.module.css";
 
 const minWidth = 150;
 const maxWidth = 600;
+const cachedWidth = Number(localStorage.getItem('sideWidth'));
+const defaultWidth = (!isNaN(cachedWidth) && cachedWidth <= maxWidth && cachedWidth >= minWidth) ? cachedWidth : 300;
+
+const cacheKey = 'APP_SIDE_WIDTH';
+function getSideWidthCache () {
+    const value = Number(window.localStorage.getItem(cacheKey));
+    if (isNaN(value)) {
+        removeSideWidthCache();
+        return null;
+    } else if (value > maxWidth) {
+        setSideWidthCache(maxWidth);
+        return maxWidth;
+    } else if (value < minWidth) {
+        setSideWidthCache(minWidth);
+        return minWidth;
+    } else {
+        return value;
+    }
+};
+function setSideWidthCache (value) {
+    if (isNaN(value)) {
+        removeSideWidthCache();
+        return null;
+    } else if (value > maxWidth) {
+        setSideWidthCache(maxWidth);
+        return maxWidth;
+    } else if (value < minWidth) {
+        setSideWidthCache(minWidth);
+        return minWidth;
+    } else {
+        setSideWidthCache(value);
+        return value;
+    }
+};
+function removeSideWidthCache() {
+    window.localStorage.removeItem(cacheKey);
+}
 
 export default function WebAppFrame(props) {
-    const [ sideWidth, setSideWidth ] = useState(300);
+    const [ sideWidth, setSideWidth ] = useState(defaultWidth);
     const [ resizeActive, setResizeActive ] = useState(false);
     const [ offset, setOffset ] = useState(0);
     return (
