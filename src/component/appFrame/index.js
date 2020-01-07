@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import styles from "./index.module.css";
 
-const minWidth = 150;
-const maxWidth = 600;
-const cachedWidth = Number(localStorage.getItem('sideWidth'));
-const defaultWidth = (!isNaN(cachedWidth) && cachedWidth <= maxWidth && cachedWidth >= minWidth) ? cachedWidth : 300;
-
 const cacheKey = 'APP_SIDE_WIDTH';
 function getSideWidthCache () {
     const value = Number(window.localStorage.getItem(cacheKey));
@@ -27,19 +22,25 @@ function setSideWidthCache (value) {
         removeSideWidthCache();
         return null;
     } else if (value > maxWidth) {
-        setSideWidthCache(maxWidth);
+        window.localStorage.setItem(cacheKey, maxWidth);
         return maxWidth;
     } else if (value < minWidth) {
-        setSideWidthCache(minWidth);
+        window.localStorage.setItem(cacheKey, minWidth);
         return minWidth;
     } else {
-        setSideWidthCache(value);
+        window.localStorage.setItem(cacheKey, value);
         return value;
     }
 };
 function removeSideWidthCache() {
     window.localStorage.removeItem(cacheKey);
 }
+
+const minWidth = 150;
+const maxWidth = 600;
+const cachedWidth = getSideWidthCache();
+const defaultWidth = (!isNaN(cachedWidth) && cachedWidth <= maxWidth && cachedWidth >= minWidth) ? cachedWidth : 300;
+
 
 export default function WebAppFrame(props) {
     const [ sideWidth, setSideWidth ] = useState(defaultWidth);
@@ -60,6 +61,7 @@ export default function WebAppFrame(props) {
                 if (width < minWidth) width = minWidth;
                 setSideWidth(width);
                 setOffset(evt.screenX);  
+                setSideWidthCache(width);
             }}
         >
             <div className={styles.header}>{props.header}</div>

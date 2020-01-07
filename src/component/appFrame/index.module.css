@@ -6,7 +6,7 @@
 }
 
 .header {
-    background-color: red;
+    border-bottom: 1px solid #dddddd;
     flex: 0 0 60px;
 }
 
@@ -14,26 +14,30 @@
     flex: 1 1 auto;
     display: flex;
     align-items: stretch;
+    overflow: hidden;
 }
 .main {
-    background-color: coral;
     flex: 1 1 auto;
+    overflow: auto;
 }
 .side {
     flex: 0 0 auto;
     display: flex;
+    border-right: 1px solid #dddddd;
 }
 .sideMain {
-    background-color: burlywood;
     flex: 1 1 auto;
 }
 .sideBar {
-    background-color: brown;
     flex: 0 0 10px;
     cursor: ew-resize;
 }
 .footer {
-    background-color: blueviolet;
-    flex: 0 0 20px;
+    border-top: 1px solid #dddddd;
+    flex: 0 0 30px;
+    font-size: 12px;
+    display: flex;
+    padding: 0 4px;
+    align-items: center;
 }
 

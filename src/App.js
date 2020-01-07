@@ -2,11 +2,16 @@ import React from 'react';
 import "antd/dist/antd.css";
 
 import AppFrame from "./component/appFrame";
+import DataTable from './component/dataTable';
+import Category from './component/category';
 
 function App() {
   return (
-    <AppFrame>
-      content
+    <AppFrame
+      side={<Category />}
+      footer={<span>稍等片刻，正在加载...</span>}
+    >
+      <DataTable />
     </AppFrame>
   );
 }
