@@ -61,7 +61,9 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/ad
 
 ### Deployment
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+* switch to gh-pages branch
+* merge master into gh-pages
+* run yarn deploy command
 
 ### `yarn build` fails to minify
 
