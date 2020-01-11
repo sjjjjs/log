@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import { Tree, Input } from 'antd';
+// import { Tree, Input } from 'antd';
 import Tabulator from 'tabulator-tables';
 
 var tableDataNested = [
@@ -23,12 +23,12 @@ export default function Demo() {
   useEffect(() => {
     if (rootRef) {
       new Tabulator(rootRef, {
+        height:"100%",
         data:tableDataNested,
         dataTree:true,
-        layout:"fitColumns",
-        headerVisible:false,
+        layout:"fitDataFill",
         columns:[
-        {title:"Name", field:"name", responsive:0}, //never hide this column
+        {title:"来源分类", field:"name", responsive:0, width: '100%'}, //never hide this column
         ],
     });
     }

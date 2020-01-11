@@ -39,7 +39,7 @@ function removeSideWidthCache() {
 const minWidth = 150;
 const maxWidth = 600;
 const cachedWidth = getSideWidthCache();
-const defaultWidth = (!isNaN(cachedWidth) && cachedWidth <= maxWidth && cachedWidth >= minWidth) ? cachedWidth : 300;
+const defaultWidth = (!isNaN(cachedWidth) && cachedWidth <= maxWidth && cachedWidth >= minWidth) ? cachedWidth : 270;
 
 
 export default function WebAppFrame(props) {
@@ -80,7 +80,7 @@ export default function WebAppFrame(props) {
                 </div>
                 <div className={styles.main}>{props.children}</div>
             </div>
-            <div className={styles.footer}>{props.footer}</div>
+            {/* <div className={styles.footer}>{props.footer}</div> */}
         </div>
     );
 }

@@ -39,3 +39,9 @@
 .messageSpan {
     white-space: nowrap;
 }
+:global(.tabulator) {
+    border: none;
+}
+/* :global(.tabulator-tableHolder) {
+    background-color: #ffffff;
+} */
