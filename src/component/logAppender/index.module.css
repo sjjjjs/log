@@ -1,0 +1,22 @@
+
+.textarea {
+    width: 100%;
+    height: 280px;
+    resize: none;
+    border: none;
+    padding: 10px;
+    line-height: 1.5;
+    box-sizing: border-box;
+    font-size: 18px;
+}
+.textarea:focus {
+    outline: none;
+}
+.container {
+    overflow: hidden;
+}
+.buttonWrap {
+    padding: 10px;
+    display: flex;
+    justify-content: flex-end;
+}
