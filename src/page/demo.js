@@ -1,7 +1,26 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import {
+    Navbar, NavbarGroup, NavbarDivider, NavbarHeading, Button, Classes
+} from '@blueprintjs/core';
 import store from 'store/index';
 import styles from './demo.module.css';
 import LogItem from 'component/logItem';
+import AppFrame from 'component/appFrame';
+
+function Navigatior() {
+    const h = useHistory();
+    return (
+        <Navbar className={Classes.DARK}>
+            <NavbarGroup align="left">
+                <NavbarHeading>记住每个精彩瞬间！</NavbarHeading>
+            </NavbarGroup>
+            <NavbarGroup align="right">
+                <Button onClick={() => h.push('/log.create')} icon="add">创建记录</Button>
+            </NavbarGroup>
+        </Navbar>
+    );
+}
 
 function Demo() {
     const [logMessages, setLogMessages] = useState([]);
@@ -13,11 +32,13 @@ function Demo() {
         fetch();
     }, []);
     return (
-        <div className={styles.container}>
-            { logMessages.map(message => (
-                <LogItem key={message.id} date={message.date}>{message.content}</LogItem>
-            ))}
-        </div>
+        <AppFrame header={<Navigatior />} footer={<span>草木皆兵</span>}>
+            <div className={styles.container}>
+                { logMessages.map(message => (
+                    <LogItem key={message.id} date={message.time}>{message.content}</LogItem>
+                ))}
+            </div>
+        </AppFrame>
     );
 }
 

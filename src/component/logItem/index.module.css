@@ -1,17 +1,8 @@
 
 .container {
-    padding: 0 20px;
-    border-top: 1px solid #ececec;
-    overflow: hidden;
+    margin-top: 10px;
 }
-.container:first-child {
-    border-top: 1px solid transparent;
-}
-.content {
-    line-height: 1.5;
-    margin: 10px 0;
-    cursor: default;
-}
-.date {
-    color: #999999;
+.meta {
+    padding: 5px 20px;
+    /* text-align: center; */
 }

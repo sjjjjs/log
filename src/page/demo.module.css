@@ -1,10 +1,5 @@
 
 .container {
-    max-width: 694px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 30px;
-    margin-bottom: 30px;
-    background-color: #ffffff;
-    box-shadow: 0 1px 3px rgba(26,26,26,.1);
+    margin: 10px auto;
+    max-width: 640px;
 }
