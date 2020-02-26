@@ -4,7 +4,7 @@ import styles from './index.module.css';
 import store from 'store';
 
 function handleSubmit(value) {
-    store.logMessages.add({
+    store.logMessages.put({
         time: new Date(),
         content: value
     }).then(() => {
