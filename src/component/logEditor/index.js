@@ -3,27 +3,26 @@ import { Button, Card, TextArea } from '@blueprintjs/core';
 import styles from './index.module.css';
 import store from 'store';
 
-function handleSubmit(value) {
-    store.logMessages.put({
-        time: new Date(),
-        content: value
-    }).then(() => {
-        window.location.href = '#/log';
-    }).catch(err => {
-        alert(err.message);
-    });
-}
-
 export default function LogEditor (props) {
     const { id } = props;
     const [ initState, setInitState ] = useState(false);
+    const [ isNew, setIsNew ] = useState(true);
     const [ value, setValue ] = useState('');
 
     useEffect(() => {
         (async function() {
+            if (!id) {
+                setInitState(true);
+                return;
+            };
             store.logMessages.get(Number(id))
-                .then(m => m && setValue(m.content))
-                .finally(() => setInitState(true));
+                .then(m => {
+                    m && setValue(m.content);
+                    setIsNew(false);
+                })
+                .finally(() => {
+                    setInitState(true);
+                });
         })();
     }, [ id ]);
     return (
@@ -39,7 +38,24 @@ export default function LogEditor (props) {
                         onChange={evt => setValue(evt.target.value)}
                     />
                     <div className={styles.buttonWrap}>
-                        <Button intent="primary" onClick={() => handleSubmit(value)}>提交</Button>
+                        <Button intent="primary" onClick={() => {
+                            let process;
+                            if (isNew) {
+                                process = store.logMessages.add({
+                                    time: new Date(),
+                                    content: value
+                                });
+                            } else {
+                                process = store.logMessages.update(Number(id), {
+                                    content: value
+                                });
+                            }
+                            process.then(() => {
+                                window.location.href = '#/log';
+                            }).catch(err => {
+                                alert(err.message);
+                            });
+                        }}>提交</Button>
                     </div>
                 </Card>
             }

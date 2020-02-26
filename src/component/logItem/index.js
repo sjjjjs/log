@@ -3,15 +3,17 @@
 import React, { useState } from 'react';
 import TimeAgo from 'timeago-react';
 import { useHistory } from 'react-router-dom';
-import { Card, Classes } from '@blueprintjs/core';
+import { Card, Classes, Alert, Intent } from '@blueprintjs/core';
 import names from 'classnames';
 import styles from './index.module.css';
 import store from 'store';
 import ReactMarkdown from 'react-markdown';
+import { AppToaster } from 'util/toaster';
 
 export default function (props) {
     const h = useHistory();
     const [ visible, setVisible ] = useState(true);
+    const [ isOpen, setIsOpen ] = useState(false);
     return (
         visible && <div className={styles.container}>
             <div className={styles.meta}>
@@ -36,13 +38,7 @@ export default function (props) {
                             Classes.TEXT_SMALL
                         )}
                         onClick={() => {
-                            store.logMessages.delete(props.id)
-                            .then(() => {
-                                setVisible(false);
-                            })
-                            .catch(err => {
-                                alert(err.message);
-                            });
+                            setIsOpen(true);
                         }}
                     >
                         删除
@@ -54,6 +50,27 @@ export default function (props) {
                     <ReactMarkdown source={props.children} />
                 </div>
             </Card>
+            <Alert
+                cancelButtonText="取消"
+                confirmButtonText="确定删除"
+                icon="trash"
+                intent={Intent.DANGER}
+                isOpen={isOpen}
+                onCancel={() => setIsOpen(false)}
+                onConfirm={() => {
+                    setIsOpen(false);
+                    store.logMessages.delete(props.id)
+                        .then(() => {
+                            setVisible(false);
+                            AppToaster.show({ timeout: 2000, message: '删除成功', intent: 'success' });
+                        })
+                        .catch(err => {
+                            alert(err.message);
+                        });
+                }}
+            >
+                你确定将此条记录删除吗？ 删除后无法再次找回，请确认操作。
+            </Alert>
         </div>
     );
 }
