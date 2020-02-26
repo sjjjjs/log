@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import {
     Navbar, NavbarGroup, NavbarDivider, NavbarHeading, Button, Classes
 } from '@blueprintjs/core';
@@ -13,7 +13,11 @@ function Navigatior() {
     return (
         <Navbar className={Classes.DARK}>
             <NavbarGroup align="left">
-                <NavbarHeading>记住每个精彩瞬间！</NavbarHeading>
+                <NavbarHeading>
+                    <Link to="/">英雄笔记</Link>
+                </NavbarHeading>
+                <NavbarDivider />
+                <NavbarHeading>日志</NavbarHeading>
             </NavbarGroup>
             <NavbarGroup align="right">
                 <Button onClick={() => h.push('/log.create')} icon="add">创建记录</Button>

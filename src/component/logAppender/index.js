@@ -18,7 +18,7 @@ export default function LogAppender (props) {
     const [value, setValue] = useState('');
     return (
         <div className={styles.container}>
-            <Card elevation={Elevation.TWO} interactive>
+            <Card>
                 <textarea placeholder="在此开始..." value={value} onChange={evt => setValue(evt.target.value)} className={styles.textarea}></textarea>
                 <div className={styles.buttonWrap}>
                     <Button intent="primary" onClick={() => handleSubmit(value)}>提交</Button>
