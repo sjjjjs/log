@@ -7,3 +7,4 @@ db.version(2).stores({
 });
 
 export default db;
+window.db = db;

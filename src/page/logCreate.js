@@ -1,10 +1,10 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import {
     Navbar, NavbarGroup, Button, Classes
 } from '@blueprintjs/core';
 import styles from './logCreate.module.css';
-import LogAppender from 'component/logAppender';
+import LogEditor from 'component/logEditor';
 import AppFrame from 'component/appFrame';
 
 function PageNavigator() {
@@ -22,15 +22,17 @@ function PageNavigator() {
     );
 }
 
-function Appender() {
+function LogCreate() {
+    const params = useParams();
+    const { id = null } = params;
     return (
         <AppFrame header={<PageNavigator />}>
             <div className={styles.container}>
-                <LogAppender />
+                <LogEditor id={id} />
             </div>
         </AppFrame>
     );
 }
 
-export const component = Appender;
-export const path = '/log.create';
+export const component = LogCreate;
+export const path = '/log.createOrEdit/:id?';

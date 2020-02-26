@@ -20,7 +20,7 @@ function Navigatior() {
                 <NavbarHeading>日志</NavbarHeading>
             </NavbarGroup>
             <NavbarGroup align="right">
-                <Button onClick={() => h.push('/log.create')} icon="add">创建记录</Button>
+                <Button onClick={() => h.push('/log.createOrEdit')}>创建记录</Button>
             </NavbarGroup>
         </Navbar>
     );
@@ -39,7 +39,7 @@ function Log() {
         <AppFrame header={<Navigatior />} footer={<span>草木皆兵</span>}>
             <div className={styles.container}>
                 { logMessages.map(message => (
-                    <LogItem key={message.id} date={message.time}>{message.content}</LogItem>
+                    <LogItem key={message.id} id={message.id} date={message.time}>{message.content}</LogItem>
                 ))}
             </div>
         </AppFrame>
