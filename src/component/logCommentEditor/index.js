@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Card, TextArea } from '@blueprintjs/core';
 import styles from './index.module.css';
-import store from 'store';
+import logCommentService from 'service/logComment';
+import { useHistory } from 'react-router-dom';
 
 export default function LogCommentEditor (props) {
     const { id, cid } = props;
     const [ initState, setInitState ] = useState(false);
     const [ isNew, setIsNew ] = useState(true);
     const [ value, setValue ] = useState('');
+    const h = useHistory();
 
     useEffect(() => {
         (async function() {
@@ -15,7 +17,7 @@ export default function LogCommentEditor (props) {
                 setInitState(true);
                 return;
             };
-            store.logCommentMessage.get(Number(cid))
+            logCommentService.get(cid)
                 .then(m => {
                     m && setValue(m.content);
                     setIsNew(false);
@@ -41,18 +43,17 @@ export default function LogCommentEditor (props) {
                         <Button intent="primary" onClick={() => {
                             let process;
                             if (isNew) {
-                                process = store.logCommentMessage.add({
-                                    lid: id,
+                                process = logCommentService.add(id, {
                                     time: new Date(),
                                     content: value
                                 });
                             } else {
-                                process = store.logCommentMessage.update(Number(cid), {
+                                process = logCommentService.upd(cid, {
                                     content: value
                                 });
                             }
                             process.then(() => {
-                                window.location.href = '#/log';
+                                h.goBack();
                             }).catch(err => {
                                 alert(err.message);
                             });

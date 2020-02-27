@@ -11,18 +11,20 @@ function PageNavigator() {
     const h = useHistory();
     return (
         <Navbar className={Classes.DARK}>
-            <NavbarGroup align="left">
-                <Button
-                    onClick={() => h.replace('/log')}
-                    icon="chevron-left"
-                    minimal
-                >返回</Button>
-            </NavbarGroup>
+            <div style={{width: '640px', margin: 'auto'}}>
+                <NavbarGroup align="left">
+                    <Button
+                        onClick={() => h.goBack()}
+                        icon="chevron-left"
+                        minimal
+                    >返回</Button>
+                </NavbarGroup>
+            </div>
         </Navbar>
     );
 }
 
-function LogCreate() {
+function LogCommentCreate() {
     const params = useParams();
     const { id = null, cid = null } = params;
     return (
@@ -34,5 +36,5 @@ function LogCreate() {
     );
 }
 
-export const component = LogCreate;
-export const path = '/log.comment.create/:id/:cid?';
+export const component = LogCommentCreate;
+export const path = '/log.comment.createOrEdit/:id/:cid?';

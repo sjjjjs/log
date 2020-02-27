@@ -1,0 +1,23 @@
+
+/* .container {
+
+} */
+.logContentBox {
+    padding: 30px;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+}
+.logContent {
+    width: 640px;
+}
+
+
+.commentBox {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+}
+.commentContent {
+    width: 640px;
+}

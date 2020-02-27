@@ -1,0 +1,41 @@
+
+
+.comments {
+    /* width: 640px; */
+}
+.comment {
+    padding: 5px 0;
+    margin-top: 5px;
+    border-top: 1px solid #ececec;
+}
+.hoverVisible {
+    visibility: hidden;
+}
+.comment:hover .hoverVisible {
+    visibility: visible;
+}
+.comment:first-child {
+    margin-top: 0;
+    border-top: 1px solid transparent;
+}
+.commentTime {
+    display: flex;
+    padding: 5px 0;
+}
+/* .commentContent {
+
+} */
+.commentMeta {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+}
+/* .commentMetaBlock {
+
+} */
+.commentMetaItem {
+    margin-left: 24px;
+}
+.commentMetaItem:first-child {
+    margin-left: 0;
+}

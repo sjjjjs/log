@@ -3,25 +3,27 @@ import { useHistory, Link } from 'react-router-dom';
 import {
     Navbar, NavbarGroup, NavbarDivider, NavbarHeading, Button, Classes
 } from '@blueprintjs/core';
-import store from 'store/index';
 import styles from './log.module.css';
 import LogItem from 'component/logItem';
 import AppFrame from 'component/appFrame';
+import logService from 'service/log';
 
 function Navigatior() {
     const h = useHistory();
     return (
         <Navbar className={Classes.DARK}>
-            <NavbarGroup align="left">
-                <NavbarHeading>
-                    <Link to="/">英雄笔记</Link>
-                </NavbarHeading>
-                <NavbarDivider />
-                <NavbarHeading>日志</NavbarHeading>
-            </NavbarGroup>
-            <NavbarGroup align="right">
-                <Button onClick={() => h.push('/log.createOrEdit')}>创建记录</Button>
-            </NavbarGroup>
+            <div style={{width: '640px', margin: 'auto'}}>
+                <NavbarGroup align="left">
+                    <NavbarHeading>
+                        <Link className={Classes.Link} to="/log">英雄笔记</Link>
+                    </NavbarHeading>
+                    <NavbarDivider />
+                    <NavbarHeading>日志</NavbarHeading>
+                </NavbarGroup>
+                <NavbarGroup align="right">
+                    <Button onClick={() => h.push('/log.createOrEdit')}>创建记录</Button>
+                </NavbarGroup>
+            </div>
         </Navbar>
     );
 }
@@ -30,8 +32,8 @@ function Log() {
     const [logMessages, setLogMessages] = useState([]);
     useEffect(() => {
         async function fetch() {
-            const list = await store.logMessages.orderBy('time').toArray();
-            setLogMessages(list.reverse());
+            const list = await logService.all();
+            setLogMessages(list);
         }
         fetch();
     }, []);
