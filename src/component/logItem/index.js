@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom';
 import { Card, Classes, Alert, Intent, Elevation } from '@blueprintjs/core';
 import names from 'classnames';
 import styles from './index.module.css';
-import ReactMarkdown from 'react-markdown';
+import MarkdownPreview from 'component/markdownPreview';
 import { AppToaster } from 'util/toaster';
 import logService from 'service/log';
 
@@ -44,7 +44,7 @@ export default function (props) {
             </div>
             <Card elevation={Elevation.ONE} interactive onClick={() => h.push(`/log.detail/${props.id}`)}>
                 <div className={names("markdown-body", styles.markdownBody)}>
-                    <ReactMarkdown source={props.children} />
+                    <MarkdownPreview source={props.children} short />
                 </div>
             </Card>
         </div>

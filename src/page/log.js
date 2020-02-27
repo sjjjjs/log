@@ -38,7 +38,7 @@ function Log() {
         fetch();
     }, []);
     return (
-        <AppFrame header={<Navigatior />} footer={<span>草木皆兵</span>}>
+        <AppFrame header={<Navigatior />}>
             <div className={styles.container}>
                 { logMessages.map(message => (
                     <LogItem key={message.id} id={message.id} date={message.time}>{message.content}</LogItem>

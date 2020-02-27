@@ -8,6 +8,7 @@ import TimeAgo from 'timeago-react';
 import { useHistory } from 'react-router-dom';
 import { AppToaster } from 'util/toaster';
 import logCommentService from 'service/logComment';
+import MarkdownPreview from 'component/markdownPreview';
 
 function LogComment(props) {
     const h = useHistory();
@@ -65,7 +66,7 @@ function LogComment(props) {
                 </div>
             </div>
             <div className={names(styles.commentContent, Classes.RUNNING_TEXT)}>
-                <span>{c.content}</span>
+                <MarkdownPreview source={c.content} />
             </div>
         </div>
     );

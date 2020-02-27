@@ -47,7 +47,6 @@ function PageNavigator() {
 
 function LogDetail(props) {
     const params = useParams();
-    const h = useHistory();
     const [ logData, setLogData ] = useState(null);
     const [ logCommentsData, setLogCommentsData ] = useState([]);
     useEffect(() => {

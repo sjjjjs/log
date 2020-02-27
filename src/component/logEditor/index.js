@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Button, Card, TextArea } from '@blueprintjs/core';
 import styles from './index.module.css';
 import store from 'store';
+import { useHistory } from 'react-router-dom';
 
 export default function LogEditor (props) {
     const { id } = props;
     const [ initState, setInitState ] = useState(false);
     const [ isNew, setIsNew ] = useState(true);
     const [ value, setValue ] = useState('');
-
+    const h = useHistory();
+    
     useEffect(() => {
         (async function() {
             if (!id) {
@@ -51,7 +53,7 @@ export default function LogEditor (props) {
                                 });
                             }
                             process.then(() => {
-                                window.location.href = '#/log';
+                                h.goBack();
                             }).catch(err => {
                                 alert(err.message);
                             });

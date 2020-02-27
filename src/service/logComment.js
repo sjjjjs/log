@@ -8,7 +8,7 @@ const del = (id) => store.logCommentMessage.delete(Number(id));
 
 const upd = (id, logCommentInfo) => store.logCommentMessage.update(Number(id), logCommentInfo);
 
-const all = (id) => store.logCommentMessage.where({ lid: id }).toArray().then(l => l.reverse());
+const all = (id) => store.logCommentMessage.where({ lid: id }).toArray();
 
 export default {
     get, add, del, upd, all
