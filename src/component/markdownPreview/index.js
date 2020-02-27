@@ -10,7 +10,7 @@ export default function MarkdownPreview(props) {
     const title = sepIdx > 0 ? source.slice(0, sepIdx) : '';
     return (
         <div className={names("markdown-body", className)}>
-            <ReactMarkdown source={props.short ? title : source} />
+            <ReactMarkdown source={props.short ? (title || source) : source} />
         </div>
     );
 }
