@@ -3,14 +3,13 @@ import { useHistory, useParams } from 'react-router-dom';
 import {
     Navbar, NavbarGroup, Button, Classes
 } from '@blueprintjs/core';
-import names from 'classnames';
-import ReactMarkdown from 'react-markdown';
 import styles from './logDetail.module.css';
 import AppFrame from 'component/appFrame';
 import logService from 'service/log';
 import logCommentService from 'service/logComment';
 import LogComments from 'component/logComments';
 import { AppToaster } from 'util/toaster';
+import MarkdownPreview from 'component/markdownPreview';
 
 function PageNavigator() {
     const h = useHistory();
@@ -20,7 +19,7 @@ function PageNavigator() {
             <div style={{width: '640px', margin: 'auto'}}>
                 <NavbarGroup align="left">
                     <Button
-                        onClick={() => h.replace('/log')}
+                        onClick={() => h.goBack()}
                         icon="chevron-left"
                         minimal
                     >返回</Button>
@@ -63,8 +62,12 @@ function LogDetail(props) {
             <div className={styles.container}>
                 {
                     logData && <div className={styles.logContentBox}>
-                        <div className={names("markdown-body", styles.logContent)}>
-                            <ReactMarkdown source={logData.content} />
+                        <div className={styles.logContent}>
+                            <MarkdownPreview source={logData.content} selectAble onSelect={
+                                pos => {
+                                    console.log('pos', pos);
+                                }
+                            } />
                         </div>
                     </div>
                 }
