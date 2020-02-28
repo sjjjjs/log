@@ -1,23 +1,25 @@
 import React from 'react';
-import { Card, TextArea } from '@blueprintjs/core';
 import styles from './index.module.css';
+import { TextArea } from '@blueprintjs/core';
 import { noop } from 'util/commonUtil';
 
-export default function LogCommentEditor (props) {
-    const { value = '', onChange = noop, placeholder = '' } = props;
-
+export default function(props) {
+    const {
+        value = '',
+        onChange = noop,
+        placeholder = ''
+    } = props;
     return (
         <div className={styles.container}>
-            <Card>
+            <div className={styles.editorBox}>
                 <TextArea
-                    fill
-                    large
+                    fill large
                     value={value}
                     growVertically
                     placeholder={placeholder}
                     onChange={evt => onChange(evt.target.value)}
                 />
-            </Card>
+            </div>
         </div>
     );
 }

@@ -7,11 +7,9 @@ import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 import 'github-markdown-css';
 
 function App() {
-  return (
-    <Router>
-      {pages}
-    </Router>
-  );
+    return (
+        <Router>{pages}</Router>
+    );
 }
 
 export default App;

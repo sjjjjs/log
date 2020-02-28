@@ -1,66 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Card, TextArea } from '@blueprintjs/core';
+import React from 'react';
+import { Card, TextArea } from '@blueprintjs/core';
 import styles from './index.module.css';
-import store from 'store';
-import { useHistory } from 'react-router-dom';
+import { noop } from 'util/commonUtil';
 
-export default function LogEditor (props) {
-    const { id } = props;
-    const [ initState, setInitState ] = useState(false);
-    const [ isNew, setIsNew ] = useState(true);
-    const [ value, setValue ] = useState('');
-    const h = useHistory();
-    
-    useEffect(() => {
-        (async function() {
-            if (!id) {
-                setInitState(true);
-                return;
-            };
-            store.logs.get(Number(id))
-                .then(m => {
-                    m && setValue(m.content);
-                    setIsNew(false);
-                })
-                .finally(() => {
-                    setInitState(true);
-                });
-        })();
-    }, [ id ]);
+export default function LogEditor(props) {
+    const { value = '', onChange = noop, placeholder = '' } = props;
     return (
         <div className={styles.container}>
-            {
-                initState && <Card>
-                    <TextArea
-                        fill
-                        large
-                        value={value}
-                        growVertically
-                        placeholder="在此开始..."
-                        onChange={evt => setValue(evt.target.value)}
-                    />
-                    <div className={styles.buttonWrap}>
-                        <Button intent="primary" onClick={() => {
-                            let process;
-                            if (isNew) {
-                                process = store.logs.add({
-                                    time: new Date(),
-                                    content: value
-                                });
-                            } else {
-                                process = store.logs.update(Number(id), {
-                                    content: value
-                                });
-                            }
-                            process.then(() => {
-                                h.goBack();
-                            }).catch(err => {
-                                alert(err.message);
-                            });
-                        }}>提交</Button>
-                    </div>
-                </Card>
-            }
+            <Card>
+                <TextArea
+                    fill
+                    large
+                    value={value}
+                    growVertically
+                    placeholder={placeholder}
+                    onChange={evt => onChange(evt.target.value)}
+                />
+            </Card>
         </div>
     );
 }

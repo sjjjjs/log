@@ -1,6 +1,5 @@
-
 .markdownBody > [data-sourcepos]:hover {
-    outline: 1px solid red;
+    outline: 10px solid wheat;
     background-color: wheat;
     cursor: pointer;
 }
