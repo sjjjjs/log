@@ -29,18 +29,18 @@ function Navigatior() {
 }
 
 function Log() {
-    const [logMessages, setLogMessages] = useState([]);
+    const [logs, setlogs] = useState([]);
     useEffect(() => {
         async function fetch() {
             const list = await logService.all();
-            setLogMessages(list);
+            setlogs(list);
         }
         fetch();
     }, []);
     return (
         <AppFrame header={<Navigatior />}>
             <div className={styles.container}>
-                { logMessages.map(message => (
+                { logs.map(message => (
                     <LogItem key={message.id} id={message.id} date={message.time}>{message.content}</LogItem>
                 ))}
             </div>

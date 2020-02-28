@@ -17,7 +17,7 @@ export default function LogEditor (props) {
                 setInitState(true);
                 return;
             };
-            store.logMessages.get(Number(id))
+            store.logs.get(Number(id))
                 .then(m => {
                     m && setValue(m.content);
                     setIsNew(false);
@@ -43,12 +43,12 @@ export default function LogEditor (props) {
                         <Button intent="primary" onClick={() => {
                             let process;
                             if (isNew) {
-                                process = store.logMessages.add({
+                                process = store.logs.add({
                                     time: new Date(),
                                     content: value
                                 });
                             } else {
-                                process = store.logMessages.update(Number(id), {
+                                process = store.logs.update(Number(id), {
                                     content: value
                                 });
                             }
