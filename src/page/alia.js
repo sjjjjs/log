@@ -122,6 +122,7 @@ export default function Alia() {
                         icon={icon}
                         title={title}
                         action={action}
+                        extra={description}
                     >
                     </NonIdealState>
                 }
