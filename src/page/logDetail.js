@@ -79,34 +79,16 @@ export default function LogDetail() {
             header={
                 <NormalNavigator
                     showBack
-                    title={<Button minimal icon="home" onClick={() => h.push(getUrlUtil.getLogUrl())}>日志首页</Button>}
+                    title={<Button icon="home" onClick={() => h.push(getUrlUtil.getLogUrl())}>日志首页</Button>}
                     actions={
                         < >
                         <NavigationActions />
                         <NavbarDivider />
                         <Switch style={{ marginBottom: 0, marginLeft: 5, marginRight: 5 }}
-                            label={<span>片段编辑</span>} checked={partialEdit} onChange={() => setPartialEdit(!partialEdit)}/>
+                            label={<span>编辑</span>} checked={partialEdit} onChange={() => setPartialEdit(!partialEdit)}/>
                         </>
                     }
                 />
-            }
-            footer={
-                <NormalFooter>
-                    <Button
-                        icon="comment"
-                        minimal
-                        onClick={() => {
-                            setCommentSource('');
-                            setIsOpenCommentDrawerEditor(true);
-                            setCommentRefId('');
-                        }}
-                    >评论</Button>
-                    <div className={Classes.TEXT_MUTED}>
-                        {logData && <Ago time={logData.time} />}
-                        <span> · </span>
-                        <span>{logCommentsData ? logCommentsData.length : 0} 评论</span>
-                    </div>
-                </NormalFooter>
             }
         >
             <div className={styles.container}>
@@ -124,7 +106,14 @@ export default function LogDetail() {
                         </div>
                     </div>
                 }
-
+                <NormalFooter>
+                    <div className={Classes.TEXT_MUTED}>
+                        日志创建于 {logData && <Ago time={logData.time} />}
+                    </div>
+                    <div className={Classes.TEXT_MUTED}>
+                        <span>累计 {logCommentsData ? logCommentsData.length : 0} 评论</span>
+                    </div>
+                </NormalFooter>
                 <div className={styles.commentBox}>
                     <div className={styles.commentContent}>
                         <LogComments
@@ -152,6 +141,16 @@ export default function LogDetail() {
                         />
                     </div>
                 </div>
+                <NormalFooter noEffect>
+                    <Button
+                        icon="comment"
+                        onClick={() => {
+                            setCommentSource('');
+                            setIsOpenCommentDrawerEditor(true);
+                            setCommentRefId('');
+                        }}
+                    >添加评论</Button>
+                </NormalFooter>
             </div>
             <DrawerEditor
                 title="日志片段"

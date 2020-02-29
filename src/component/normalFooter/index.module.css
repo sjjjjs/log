@@ -7,6 +7,10 @@
     user-select: none;
     padding: 10px 0;
 }
+.container.noEffect {
+    box-shadow: none;
+    background-color: transparent;
+}
 
 .contentBox {
     width: 640px;
