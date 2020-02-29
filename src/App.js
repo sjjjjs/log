@@ -14,15 +14,12 @@ function App() {
     return (
         <Router>
             <Switch>
-                <Route path="/l" exact >
-                    <Redirect to="/l/a/m" />
-                </Route>
                 <Route path="/l/l" component={LogPage} />
                 <Route path="/l/d/:id" component={LogDetailPage} />
                 <Route path="/l/a/:text" component={AliaPage} />
                 <Route path="/l/ce/:id?" component={LogCreatePage} />
                 <Route path="/l/lc/ce/:id/:cid?" component={LogCommentCreatePage} />
-                <Redirect to="/l" />
+                <Redirect to="/l/a/m" />
             </Switch>
         </Router>
     );

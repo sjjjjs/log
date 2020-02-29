@@ -7,6 +7,7 @@ export default function(props) {
     const {
         value = '',
         onChange = noop,
+        onSubmit = noop,
         placeholder = ''
     } = props;
     return (
@@ -19,6 +20,7 @@ export default function(props) {
                     growVertically
                     placeholder={placeholder}
                     onChange={evt => onChange(evt.target.value)}
+                    onKeyUp={evt => evt.keyCode === 13 && evt.altKey === true && onSubmit()}
                 />
             </div>
         </div>

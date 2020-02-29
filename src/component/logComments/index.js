@@ -1,55 +1,40 @@
 /* eslint-disable jsx-a11y/anchor-is-valid  */
 
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './index.module.css';
 import names from 'classnames';
-import { Classes } from '@blueprintjs/core';
-import { useHistory } from 'react-router-dom';
-import { AppToaster } from 'util/toaster';
-import logCommentService from 'service/logComment';
+import { Classes, Icon, ButtonGroup, Button, Popover, Position, Divider } from '@blueprintjs/core';
 import MarkdownPreview from 'component/markdownPreview';
-import getUrlUtil from 'util/getUrlUtil';
 import Ago from 'component/timeAgo';
+import { noop } from 'util/commonUtil';
 
 function LogComment(props) {
-    const h = useHistory();
-    const { comment: c, id } = props;
-    const [ visible, setVisible ] = useState(true);
+    const { comment: c, onRequestDelete = noop, onRequestUpdate = noop } = props;
+
     return (
-        visible && <div className={styles.comment} key={c.id}>
+        <div className={styles.comment} key={c.id}>
             <div className={names(Classes.TEXT_MUTED, styles.commentMeta)}>
                 <div className={styles.commentMetaBlock}>
                     <span className={styles.commentMetaItem}><Ago time={c.time} /></span>
                 </div>
                 <div className={names(styles.commentMetaBlock, styles.hoverVisible)}>
-                    <a
-                        className={names(
-                            styles.commentMetaItem,
-                            Classes.TEXT_MUTED
-                        )}
-                        onClick={() => h.push(getUrlUtil.getLogCommentCreateUrl(id, c.id))}
-                    >
-                        修改
-                    </a>
-                    <a
-                        className={names(
-                            styles.commentMetaItem,
-                            Classes.TEXT_MUTED
-                        )}
-                        onClick={() => {
-                            if (!window.confirm('你确定将此条记录删除吗？')) return;
-                            logCommentService.del(c.id)
-                                .then(() => {
-                                    setVisible(false);
-                                    AppToaster.show({ timeout: 2000, message: '删除成功', intent: 'success' });
-                                })
-                                .catch(err => {
-                                    alert(err.message);
-                                });
-                        } }
-                    >
-                        删除
-                    </a>
+                    <Popover content={
+                        <ButtonGroup>
+                            <Button minimal onClick={() => onRequestUpdate(c)}>编辑</Button>
+                            <Divider />
+                            <Button minimal intent="danger" onClick={() => onRequestDelete(c.id)}>删除</Button>
+                        </ButtonGroup>
+                    } position={Position.TOP} interactionKind="hover">
+                        <a
+                            className={names(
+                                styles.commentMetaItem,
+                                Classes.TEXT_MUTED,
+                                Classes.TEXT_SMALL
+                            )}
+                        >
+                            <Icon icon="more" />
+                        </a>
+                    </Popover>
                 </div>
             </div>
             <div className={names(styles.commentContent, Classes.RUNNING_TEXT)}>
@@ -60,11 +45,17 @@ function LogComment(props) {
 }
 
 export default function LogComments(props) {
+    const { list = [], onRequestDelete, onRequestUpdate} = props;
     return (
         <div className={styles.comments}>
             {
-                props.list && props.list.map(c => (
-                    <LogComment key={c.id} comment={c} id={props.id} />
+                list.map(c => (
+                    <LogComment
+                        key={c.id}
+                        comment={c}
+                        onRequestDelete={onRequestDelete}
+                        onRequestUpdate={onRequestUpdate}
+                    />
                 ))
             }
         </div>
