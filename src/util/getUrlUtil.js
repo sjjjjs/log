@@ -1,8 +1,8 @@
 
 export default {
-    getAliaUrl: text => `/alia/${text}`,
-    getLogDetailUrl: (id) => `/log.detail/${id}`,
-    getLogUrl: () => `/log`,
-    getLogCommentCreateUrl: (id, cid = '') => `/log.comment.createOrEdit/${id}/${cid}`,
-    getLogCreateUrl: (id = '') => `/log.createOrEdit/${id}`,
+    getLogUrl: () => `/l`,
+    getLogDetailUrl: (id) => `/l/${id}`,
+    getAliaUrl: text => `/l/a/${text}`,
+    getLogCreateUrl: (id = '') => `/l/ce/${id}`,
+    getLogCommentCreateUrl: (id, cid = '') => `/l/lc/ce/${id}/${cid}`
 }

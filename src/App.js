@@ -13,11 +13,11 @@ import 'github-markdown-css';
 function App() {
     return (
         <Router>
-            <Route path="/log" exact component={LogPage} />
-            <Route path="/alia/:id" component={AliaPage} />
-            <Route path="/log.comment.createOrEdit/:id/:cid?" component={LogCommentCreatePage} />
-            <Route path="/log.createOrEdit/:id?" component={LogCreatePage} />
-            <Route path="/log.detail/:id" component={LogDetailPage} />
+            <Route path="/l" exact component={LogPage} />
+            <Route path="/l/:id" exact component={LogDetailPage} />
+            <Route path="/l/a/:id" exact component={AliaPage} />
+            <Route path="/l/ce/:id?" exact component={LogCreatePage} />
+            <Route path="/l/lc/ce/:id/:cid?" exact component={LogCommentCreatePage} />
         </Router>
     );
 }
