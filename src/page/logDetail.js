@@ -92,10 +92,10 @@ export default function LogDetail() {
             }
         >
             <div className={styles.container}>
-                {
-                    logData && <div className={styles.logContentBox}>
-                        <div className={styles.logContent}>
-                            <MarkdownPreview source={logData.content} selectAble={partialEdit} onSelect={
+                <div className={styles.logContentBox}>
+                    <div className={styles.logContent}>
+                        {
+                            logData && <MarkdownPreview source={logData.content} selectAble={partialEdit} onSelect={
                                 pos => {
                                     const partial = sliceCodeFromSource(logData.content, pos);
                                     setIsOpenPartialDrawerEditor(true);
@@ -103,9 +103,9 @@ export default function LogDetail() {
                                     setPosData(pos);
                                 }
                             } />
-                        </div>
+                        }
                     </div>
-                }
+                </div>
                 <NormalFooter>
                     <div className={Classes.TEXT_MUTED}>
                         日志创建于 {logData && <Ago time={logData.time} />}
