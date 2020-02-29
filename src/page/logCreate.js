@@ -8,7 +8,7 @@ import NormalNavigator from 'component/normalNavigator';
 import logService from 'service/log';
 import { AppToaster } from 'util/toaster';
 
-function LogCreate() {
+export default function LogCreate() {
     const h = useHistory();
     const params = useParams();
     const { id = null } = params;
@@ -66,6 +66,3 @@ function LogCreate() {
         </AppFrame>
     );
 }
-
-export const component = LogCreate;
-export const path = '/log.createOrEdit/:id?';

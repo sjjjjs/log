@@ -3,41 +3,20 @@
 import React, { useState } from 'react';
 import styles from './index.module.css';
 import names from 'classnames';
-import { Classes, Alert, Intent } from '@blueprintjs/core';
+import { Classes } from '@blueprintjs/core';
 import TimeAgo from 'timeago-react';
 import { useHistory } from 'react-router-dom';
 import { AppToaster } from 'util/toaster';
 import logCommentService from 'service/logComment';
 import MarkdownPreview from 'component/markdownPreview';
+import getUrlUtil from 'util/getUrlUtil';
 
 function LogComment(props) {
     const h = useHistory();
     const { comment: c, id } = props;
     const [ visible, setVisible ] = useState(true);
-    const [ isOpen, setIsOpen ] = useState(false);
     return (
         visible && <div className={styles.comment} key={c.id}>
-            <Alert
-                cancelButtonText="取消"
-                confirmButtonText="确定删除"
-                icon="trash"
-                intent={Intent.DANGER}
-                isOpen={isOpen}
-                onCancel={() => setIsOpen(false)}
-                onConfirm={() => {
-                    setIsOpen(false);
-                    logCommentService.del(c.id)
-                        .then(() => {
-                            setVisible(false);
-                            AppToaster.show({ timeout: 2000, message: '删除成功', intent: 'success' });
-                        })
-                        .catch(err => {
-                            alert(err.message);
-                        });
-                }}
-            >
-                你确定将此条记录删除吗？ 删除后无法再次找回，请确认操作。
-            </Alert>
             <div className={names(Classes.TEXT_MUTED, styles.commentMeta)}>
                 <div className={styles.commentMetaBlock}>
                     <span className={styles.commentMetaItem}><TimeAgo datetime={c.time} locale='zh_CN' /></span>
@@ -49,7 +28,7 @@ function LogComment(props) {
                             Classes.TEXT_MUTED,
                             Classes.TEXT_SMALL
                         )}
-                        onClick={() => h.push(`/log.comment.createOrEdit/${id}/${c.id}`)}
+                        onClick={() => h.push(getUrlUtil.getLogCommentCreateUrl(id, c.id))}
                     >
                         修改
                     </a>
@@ -59,7 +38,17 @@ function LogComment(props) {
                             Classes.TEXT_MUTED,
                             Classes.TEXT_SMALL
                         )}
-                        onClick={() => setIsOpen(true) }
+                        onClick={() => {
+                            if (!window.confirm('你确定将此条记录删除吗？')) return;
+                            logCommentService.del(c.id)
+                                .then(() => {
+                                    setVisible(false);
+                                    AppToaster.show({ timeout: 2000, message: '删除成功', intent: 'success' });
+                                })
+                                .catch(err => {
+                                    alert(err.message);
+                                });
+                        } }
                     >
                         删除
                     </a>

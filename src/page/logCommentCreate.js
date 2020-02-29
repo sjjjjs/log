@@ -7,7 +7,7 @@ import AppFrame from 'component/appFrame';
 import NormalNavigation from 'component/normalNavigator';
 import logCommentService from 'service/logComment';
 
-function LogCommentCreate() {
+export default function LogCommentCreate() {
     const params = useParams();
     const { id = null, cid = null } = params;
     const [ initState, setInitState ] = useState(false);
@@ -66,6 +66,3 @@ function LogCommentCreate() {
         </AppFrame>
     );
 }
-
-export const component = LogCommentCreate;
-export const path = '/log.comment.createOrEdit/:id/:cid?';

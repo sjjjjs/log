@@ -8,6 +8,7 @@ import textToIdMapService from 'service/textToIdMap';
 import styles from './alia.module.css';
 import { Button, NonIdealState, Tag, Spinner } from '@blueprintjs/core';
 import { AppToaster } from 'util/toaster';
+import getUrlUtil from 'util/getUrlUtil';
 
 const createAndLink = async (text) => {
     let success = true;
@@ -22,7 +23,7 @@ const createAndLink = async (text) => {
     return success ? lid : null;
 }
 
-function Log() {
+export default function Log() {
     const TEXT_REG = /^\S{1,100}$/;
     const params = useParams();
     const h = useHistory();
@@ -42,7 +43,7 @@ function Log() {
                 const log = await logService.get(map.lid);
                 if (log) {
                     setIsLogExist(true);
-                    h.replace(`/log.detail/${log.id}`);
+                    h.replace(getUrlUtil.getLogDetailUrl(log.id));
                     return;
                 }
             }
@@ -64,12 +65,12 @@ function Log() {
         if (!isTextExist) {
             icon="info-sign";
             description = <span><Tag minimal large >{text}</Tag> 尚未关联日志</span>;
-            action = <Button onClick={() => createAndLink(text).then(lid => lid && h.replace(`/log.detail/${lid}`))} intent="primary" icon="confirm">新建并关联</Button>;
+            action = <Button onClick={() => createAndLink(text).then(lid => lid && h.replace(getUrlUtil.getLogDetailUrl(lid)))} intent="primary" icon="confirm">新建并关联</Button>;
         } else {
             if (!isLogExist) {
                 icon="warning-sign";
                 description = <span><Tag minimal large >{text}</Tag> 对应的日志不存在</span>;
-                action = <Button onClick={() => createAndLink(text).then(lid => lid && h.replace(`/log.detail/${lid}`))} intent="primary" icon="confirm">新建并关联</Button>;
+                action = <Button onClick={() => createAndLink(text).then(lid => lid && h.replace(getUrlUtil.getLogDetailUrl(lid)))} intent="primary" icon="confirm">新建并关联</Button>;
             }
         }
     }
@@ -95,6 +96,3 @@ function Log() {
         </AppFrame>
     );
 }
-
-export const component = Log;
-export const path = '/alia/:text';

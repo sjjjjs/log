@@ -14,6 +14,7 @@ import { sliceCodeFromSource, replaceCodeFromSource } from 'util/sourcePosUtil';
 import MarkdownEditor from 'component/markdownEditor';
 import { noop } from 'util/commonUtil';
 import NormalNavigator from 'component/normalNavigator';
+import getUrlUtil from 'util/getUrlUtil';
 
 function PartialEditDrawer(props) {
     const {
@@ -73,9 +74,9 @@ const NavigationActions = props => {
     const params = useParams();
     return (
         < >
-            <Button icon="comment" minimal onClick={() => h.push(`/log.comment.createOrEdit/${params.id}`)}>评论</Button>
+            <Button icon="comment" minimal onClick={() => h.push(getUrlUtil.getLogCommentCreateUrl(params.id))}>评论</Button>
             <NavbarDivider />
-            <Button icon="annotation" minimal onClick={() => h.push(`/log.createOrEdit/${params.id}`)}>修改</Button>
+            <Button icon="annotation" minimal onClick={() => h.push(getUrlUtil.getLogCreateUrl(params.id))}>修改</Button>
             { props.children }
             <NavbarDivider />
             <Button icon="delete" intent="danger" minimal onClick={() => {
@@ -93,7 +94,7 @@ const NavigationActions = props => {
     );
 };
 
-function LogDetail(props) {
+export default function LogDetail() {
     const params = useParams();
     const [flag, setFlag] = useState(false);
     const [logData, setLogData] = useState(null);
@@ -166,6 +167,3 @@ function LogDetail(props) {
         </AppFrame>
     );
 }
-
-export const component = LogDetail;
-export const path = '/log.detail/:id';

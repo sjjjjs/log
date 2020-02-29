@@ -6,9 +6,9 @@ import LogItem from 'component/logItem';
 import AppFrame from 'component/appFrame';
 import logService from 'service/log';
 import NormalNavigator from 'component/normalNavigator';
+import getUrlUtil from 'util/getUrlUtil';
 
-
-function Log() {
+export default function Log() {
     const h = useHistory();
     const [logs, setlogs] = useState([]);
     useEffect(() => {
@@ -23,7 +23,7 @@ function Log() {
             <NormalNavigator title="英雄·日志" actions={
                 <Button
                     minimal intent="primary" icon="annotation"
-                    onClick={() => h.push('/log.createOrEdit')}
+                    onClick={() => h.push(getUrlUtil.getLogCreateUrl())}
                 >创建日志</Button>
             } />
         }>
@@ -41,7 +41,3 @@ function Log() {
         </AppFrame>
     );
 }
-
-export const component = Log;
-export const path = '/log';
-export const exact = true;
