@@ -13,7 +13,7 @@ const createAndLink = async (text) => {
     let success = true;
     let lid;
     try {
-        lid = await logService.add({ content: text + '---\n' });
+        lid = await logService.add({ content: text + '\n---\n' });
         await textToIdMapService.link(text, lid);
     } catch(err) {
         AppToaster.show({ timeout: 2000, message: err.message, intent: 'danger' });
@@ -23,7 +23,7 @@ const createAndLink = async (text) => {
 }
 
 function Log() {
-    const TEXT_REG = /^\w{1,100}$/;
+    const TEXT_REG = /^\S{1,100}$/;
     const params = useParams();
     const h = useHistory();
     const { text = '' } = params;
