@@ -2,7 +2,7 @@ import store from 'store/index';
 
 const get = (id) => store.logs.get(Number(id));
 
-const add = (logInfo) => store.logs.add(logInfo);
+const add = (logInfo) => store.logs.add({...logInfo, time: new Date()});
 
 const del = (id) => store.logs.delete(Number(id));
 

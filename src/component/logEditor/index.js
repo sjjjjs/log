@@ -11,6 +11,7 @@ export default function LogEditor(props) {
                 <TextArea
                     fill
                     large
+                    autoFocus
                     value={value}
                     growVertically
                     placeholder={placeholder}

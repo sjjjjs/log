@@ -11,7 +11,7 @@ db.version(2).stores({
 });
 
 db.version(3).stores({
-    textToIdMap: '++id, &text, id'
+    textToIdMap: '++id, &text, lid'
 });
 
 export default db;

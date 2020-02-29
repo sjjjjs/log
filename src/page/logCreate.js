@@ -5,7 +5,7 @@ import styles from './logCreate.module.css';
 import LogEditor from 'component/logEditor';
 import AppFrame from 'component/appFrame';
 import NormalNavigator from 'component/normalNavigator';
-import store from 'store';
+import logService from 'service/log';
 import { AppToaster } from 'util/toaster';
 
 function LogCreate() {
@@ -22,7 +22,7 @@ function LogCreate() {
                 setInitState(true);
                 return;
             };
-            store.logs.get(Number(id))
+            logService.get(id)
                 .then(m => {
                     m && setValue(m.content);
                     setIsNew(false);
@@ -38,12 +38,11 @@ function LogCreate() {
                 <Button minimal intent="primary" icon="confirm" onClick={() => {
                     let process;
                     if (isNew) {
-                        process = store.logs.add({
-                            time: new Date(),
+                        process = logService.add({
                             content: value
                         });
                     } else {
-                        process = store.logs.update(Number(id), {
+                        process = logService.upd(id, {
                             content: value
                         });
                     }

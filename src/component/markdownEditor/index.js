@@ -14,6 +14,7 @@ export default function(props) {
             <div className={styles.editorBox}>
                 <TextArea
                     fill large
+                    autoFocus
                     value={value}
                     growVertically
                     placeholder={placeholder}

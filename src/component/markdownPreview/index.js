@@ -14,9 +14,13 @@ function findTopLevelEle(target) {
     }
     return findTopLevelEle(pnode);
 }
+function generatLinks(source) {
+    return source.replace(/#(\w{1,100})\s/g, (_, p1) => `[${p1}](#/alia/${p1})`);
+}
 
 export default function MarkdownPreview(props) {
-    const { source = '', className, selectAble = false } = props;
+    const { source: rsource = '', className, selectAble = false } = props;
+    const source = generatLinks(rsource);
     const sepIdx = source.indexOf(SEGMENT);
     const title = sepIdx > 0 ? source.slice(0, sepIdx) : '';
     return (
