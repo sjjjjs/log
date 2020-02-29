@@ -13,7 +13,7 @@ export default function NormalNavigator(props) {
             <div style={{width: '640px', margin: 'auto'}}>
                 <NavbarGroup align="left">
                     {
-                        showBack && <>
+                        showBack && < >
                             <Button
                                 onClick={() => h.goBack()}
                                 icon="chevron-left"

@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter as Router, Route } from 'react-router-dom';
+import { HashRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
 import AliaPage from './page/alia';
 import LogPage from './page/log';
 import LogCommentCreatePage from './page/logCommentCreate';
@@ -13,11 +13,17 @@ import 'github-markdown-css';
 function App() {
     return (
         <Router>
-            <Route path="/l" exact component={LogPage} />
-            <Route path="/l/:id" exact component={LogDetailPage} />
-            <Route path="/l/a/:id" exact component={AliaPage} />
-            <Route path="/l/ce/:id?" exact component={LogCreatePage} />
-            <Route path="/l/lc/ce/:id/:cid?" exact component={LogCommentCreatePage} />
+            <Switch>
+                <Route path="/l" exact >
+                    <Redirect to="/l/a/m" />
+                </Route>
+                <Route path="/l/l" component={LogPage} />
+                <Route path="/l/d/:id" component={LogDetailPage} />
+                <Route path="/l/a/:text" component={AliaPage} />
+                <Route path="/l/ce/:id?" component={LogCreatePage} />
+                <Route path="/l/lc/ce/:id/:cid?" component={LogCommentCreatePage} />
+                <Redirect to="/l" />
+            </Switch>
         </Router>
     );
 }

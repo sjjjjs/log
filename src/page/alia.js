@@ -13,9 +13,25 @@ import getUrlUtil from 'util/getUrlUtil';
 const createAndLink = async (text) => {
     let success = true;
     let lid;
+    let t = '';
+    if (text === 'm') { t = '美好的一天！' }
     try {
-        lid = await logService.add({ content: text + '\n---\n' });
+        lid = await logService.add({ content: t || text + '\n---\n' });
         await textToIdMapService.link(text, lid);
+    } catch(err) {
+        AppToaster.show({ timeout: 2000, message: err.message, intent: 'danger' });
+        success = false;
+    }
+    return success ? lid : null;
+}
+const createAndUpdateLink = async (text) => {
+    let success = true;
+    let lid;
+    let t = '';
+    if (text === 'm') { t = '美好的一天！' }
+    try {
+        lid = await logService.add({ content: t || text + '\n---\n' });
+        await textToIdMapService.relink(text, lid);
     } catch(err) {
         AppToaster.show({ timeout: 2000, message: err.message, intent: 'danger' });
         success = false;
@@ -63,21 +79,36 @@ export default function Log() {
         action = null;
     } else {
         if (!isTextExist) {
-            icon="info-sign";
+            icon = "info-sign";
             description = <span><Tag minimal large >{text}</Tag> 尚未关联日志</span>;
             action = <Button onClick={() => createAndLink(text).then(lid => lid && h.replace(getUrlUtil.getLogDetailUrl(lid)))} intent="primary" icon="confirm">新建并关联</Button>;
+
+            if (text === 'm') {
+                icon = "play";
+                description = <span>欢迎使用，开始创建你的第一篇日志吧！</span>;
+                action = <Button onClick={() => createAndLink(text).then(lid => lid && h.replace(getUrlUtil.getLogDetailUrl(lid)))} intent="primary" icon="confirm">创建</Button>;
+            }
         } else {
             if (!isLogExist) {
-                icon="warning-sign";
+                icon = "warning-sign";
                 description = <span><Tag minimal large >{text}</Tag> 对应的日志不存在</span>;
-                action = <Button onClick={() => createAndLink(text).then(lid => lid && h.replace(getUrlUtil.getLogDetailUrl(lid)))} intent="primary" icon="confirm">新建并关联</Button>;
+                action = <Button onClick={() => createAndUpdateLink(text).then(lid => lid && h.replace(getUrlUtil.getLogDetailUrl(lid)))} intent="primary" icon="confirm">新建并关联</Button>;
+
+                if (text === 'm') {
+                    icon = "warning-sign";
+                    description = <span>日志消失了，重新关联吧！</span>;
+                    action = <Button onClick={() => createAndUpdateLink(text).then(lid => lid && h.replace(getUrlUtil.getLogDetailUrl(lid)))} intent="primary" icon="confirm">新建并关联</Button>;
+                }
             }
         }
     }
 
     return (
         <AppFrame header={
-            <NormalNavigator showBack title="正在检查" />
+            <NormalNavigator
+                showBack={text !== 'm'}
+                title={<Button minimal icon="home" onClick={() => h.push(getUrlUtil.getLogUrl())}>日志首页</Button>}
+            />
         }>
             <div className={styles.container}>
                 {

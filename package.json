@@ -9,6 +9,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "classnames": "^2.2.6",
+    "dayjs": "^1.8.21",
     "dexie": "^2.0.4",
     "gh-pages": "^2.2.0",
     "github-markdown-css": "^4.0.0",

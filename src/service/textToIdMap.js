@@ -7,8 +7,10 @@ const findMapByText = text => store
     .catch(() => null);
 
 const link = (text, lid) => store.textToIdMap.add({ text, lid });
+const relink = (text, lid) => store.textToIdMap.where({ text }).first(item => store.textToIdMap.update(item.id, { lid }));
 
 export default {
     findMapByText,
-    link
+    link,
+    relink
 };

@@ -34,7 +34,7 @@ export default function LogCreate() {
     }, [ id ]);
     return (
         <AppFrame header={
-            <NormalNavigator showBack title="编辑日志" actions={
+            <NormalNavigator showBack title="编辑" actions={
                 <Button minimal intent="primary" icon="confirm" onClick={() => {
                     let process;
                     if (isNew) {

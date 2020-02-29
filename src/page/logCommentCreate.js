@@ -33,7 +33,7 @@ export default function LogCommentCreate() {
     }, [ cid ]);
     return (
         <AppFrame header={
-            <NormalNavigation showBack title="编辑日志评论" actions={
+            <NormalNavigation showBack title="评论" actions={
                 <Button minimal icon="confirm" intent="primary" onClick={() => {
                     let process;
                     if (isNew) {

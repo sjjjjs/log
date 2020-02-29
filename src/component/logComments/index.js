@@ -4,12 +4,12 @@ import React, { useState } from 'react';
 import styles from './index.module.css';
 import names from 'classnames';
 import { Classes } from '@blueprintjs/core';
-import TimeAgo from 'timeago-react';
 import { useHistory } from 'react-router-dom';
 import { AppToaster } from 'util/toaster';
 import logCommentService from 'service/logComment';
 import MarkdownPreview from 'component/markdownPreview';
 import getUrlUtil from 'util/getUrlUtil';
+import Ago from 'component/timeAgo';
 
 function LogComment(props) {
     const h = useHistory();
@@ -19,14 +19,13 @@ function LogComment(props) {
         visible && <div className={styles.comment} key={c.id}>
             <div className={names(Classes.TEXT_MUTED, styles.commentMeta)}>
                 <div className={styles.commentMetaBlock}>
-                    <span className={styles.commentMetaItem}><TimeAgo datetime={c.time} locale='zh_CN' /></span>
+                    <span className={styles.commentMetaItem}><Ago time={c.time} /></span>
                 </div>
                 <div className={names(styles.commentMetaBlock, styles.hoverVisible)}>
                     <a
                         className={names(
                             styles.commentMetaItem,
-                            Classes.TEXT_MUTED,
-                            Classes.TEXT_SMALL
+                            Classes.TEXT_MUTED
                         )}
                         onClick={() => h.push(getUrlUtil.getLogCommentCreateUrl(id, c.id))}
                     >
@@ -35,8 +34,7 @@ function LogComment(props) {
                     <a
                         className={names(
                             styles.commentMetaItem,
-                            Classes.TEXT_MUTED,
-                            Classes.TEXT_SMALL
+                            Classes.TEXT_MUTED
                         )}
                         onClick={() => {
                             if (!window.confirm('你确定将此条记录删除吗？')) return;
