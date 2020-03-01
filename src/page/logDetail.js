@@ -31,7 +31,7 @@ const NavigationActions = (props) => {
                         onClick={onAppendRequest}
                     />
                     <MenuItem
-                        icon="annotation" text="编辑片段" label={<><Code>⌘</Code> + <Code>e</Code></>}
+                        icon="annotation" text="编辑全部" label={<><Code>⌘</Code> + <Code>e</Code></>}
                         onClick={() => h.push(getUrlUtil.getLogCreateUrl(params.id))}
                     />
                     <Menu.Divider />

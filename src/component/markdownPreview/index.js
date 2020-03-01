@@ -16,7 +16,12 @@ function findTopLevelEle(target) {
     return findTopLevelEle(pnode);
 }
 function generatLinks(source) {
-    return source.replace(/#([A-Za-z0-9_\u4E00-\u9FA5]{1,100})/g, (m, p1) => `[${m}](#/l/a/${p1})`);
+    return source.replace(/(.?)#([A-Za-z0-9_\u4E00-\u9FA5]{1,100})/g, (m, p1, p2) => {
+        if (p1 === '\\') {
+            return '#' + p2;
+        }
+        return `${p1}[${m}](#/l/a/${p2})`;
+    });
 }
 
 export default function MarkdownPreview(props) {
