@@ -16,16 +16,22 @@ import NormalFooter from 'component/normalFooter';
 import getUrlUtil from 'util/getUrlUtil';
 import Ago from 'component/timeAgo';
 import DrawerEditor from 'component/drawerEditor';
+import { noop } from 'util/commonUtil';
 
-const NavigationActions = () => {
+const NavigationActions = (props) => {
     const h = useHistory();
     const params = useParams();
+    const { onAppendRequest = noop } = props;
     return (
         < >
             <Popover content={
                 <Menu>
                     <MenuItem
-                        icon="annotation" text="修改内容" label={<><Code>⌘</Code> + <Code>e</Code></>}
+                        icon="add" text="追加片段" label={<><Code>⌘</Code> + <Code>a</Code></>}
+                        onClick={onAppendRequest}
+                    />
+                    <MenuItem
+                        icon="annotation" text="编辑片段" label={<><Code>⌘</Code> + <Code>e</Code></>}
                         onClick={() => h.push(getUrlUtil.getLogCreateUrl(params.id))}
                     />
                     <Menu.Divider />
@@ -45,7 +51,7 @@ const NavigationActions = () => {
                     />
                 </Menu>
             } position={Position.BOTTOM}>
-                <Button icon="cog" minimal />
+                <Button icon="cog" />
             </Popover>
         </>
     );
@@ -59,8 +65,10 @@ export default function LogDetail() {
     const [logCommentsData, setLogCommentsData] = useState([]);
     const [partialEdit, setPartialEdit] = useState(false);
     const [isOpenPartialDrawerEditor, setIsOpenPartialDrawerEditor] = useState(false);
+    const [isOpenAppendDrawerEditor, setIsOpenAppendDrawerEditor] = useState(false);
     const [isOpenCommentDrawerEditor, setIsOpenCommentDrawerEditor] = useState(false);
     const [partialSource, setPartialSource] = useState('');
+    const [appendSource, setAppendSource] = useState('');
     const [commentSource, setCommentSource] = useState('');
     const [commentRefId, setCommentRefId] = useState('');
     const [posData, setPosData] = useState(null);
@@ -82,7 +90,7 @@ export default function LogDetail() {
                     title={<Button icon="home" onClick={() => h.push(getUrlUtil.getLogUrl())}>日志首页</Button>}
                     actions={
                         < >
-                        <NavigationActions />
+                        <NavigationActions onAppendRequest={() => setIsOpenAppendDrawerEditor(true)} />
                         <NavbarDivider />
                         <Switch style={{ marginBottom: 0, marginLeft: 5, marginRight: 5 }}
                             label={<span>编辑</span>} checked={partialEdit} onChange={() => setPartialEdit(!partialEdit)}/>
@@ -153,7 +161,7 @@ export default function LogDetail() {
                 </NormalFooter>
             </div>
             <DrawerEditor
-                title="日志片段"
+                title="编辑片段"
                 isOpen={isOpenPartialDrawerEditor}
                 onClose={() => {
                     setIsOpenPartialDrawerEditor(false);
@@ -170,6 +178,25 @@ export default function LogDetail() {
                 }}
                 value={partialSource}
                 onChange={val => setPartialSource(val)}
+            />
+            <DrawerEditor
+                title="追加片段"
+                isOpen={isOpenAppendDrawerEditor}
+                onClose={() => {
+                    setIsOpenAppendDrawerEditor(false);
+                }}
+                onConfirm={() => {
+                    setIsOpenAppendDrawerEditor(false);
+                    debugger
+                    logService
+                        .upd(logData.id, { content: logData.content + '\n\n' + appendSource })
+                        .then(() => {
+                            setFlag(!flag);
+                            setPartialEdit(false);
+                        });
+                }}
+                value={appendSource}
+                onChange={val => setAppendSource(val)}
             />
             <DrawerEditor
                 title={`${commentRefId ? '修改' : '发布'}评论`}
