@@ -1,6 +1,6 @@
 
 .container {
-    padding-bottom: 30vh;
+    padding-bottom: 20vh;
 }
 .logContentBox {
     padding: 30px 0;
@@ -22,7 +22,7 @@
 .commentBox {
     display: flex;
     justify-content: center;
-    margin: 30px 0;
+    margin: 10px 0;
 }
 .commentContent {
     width: 640px;

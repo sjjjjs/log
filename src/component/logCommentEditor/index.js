@@ -1,22 +1,20 @@
 import React from 'react';
-import { Card, TextArea } from '@blueprintjs/core';
+import { Card } from '@blueprintjs/core';
 import styles from './index.module.css';
 import { noop } from 'util/commonUtil';
+import MarkdownEditor from 'component/markdownEditor';
 
 export default function LogCommentEditor (props) {
-    const { value = '', onChange = noop, placeholder = '' } = props;
+    const { value = '', onChange = noop, placeholder = '', onConfirm = noop } = props;
 
     return (
         <div className={styles.container}>
             <Card>
-                <TextArea
-                    fill
-                    large
-                    autoFocus
+                <MarkdownEditor
                     value={value}
-                    growVertically
                     placeholder={placeholder}
-                    onChange={evt => onChange(evt.target.value)}
+                    onChange={val => onChange(val)}
+                    onSubmit={() => onConfirm()}
                 />
             </Card>
         </div>

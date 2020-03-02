@@ -20,7 +20,7 @@ export default function Log() {
     }, []);
     return (
         <AppFrame header={
-            <NormalNavigator title="英雄·日志" actions={
+            <NormalNavigator showBack title="日志管理" actions={
                 <Button
                     minimal intent="primary" icon="annotation"
                     onClick={() => h.push(getUrlUtil.getLogCreateUrl())}

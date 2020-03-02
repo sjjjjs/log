@@ -38,7 +38,6 @@ export default function LogCommentCreate() {
                     let process;
                     if (isNew) {
                         process = logCommentService.add(id, {
-                            time: new Date(),
                             content: value
                         });
                     } else {
