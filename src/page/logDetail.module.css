@@ -7,7 +7,6 @@
     background-color: #ffffff;
     display: flex;
     justify-content: center;
-    min-height: calc(100vh - 100px);
 }
 .logContent {
     width: 640px;
