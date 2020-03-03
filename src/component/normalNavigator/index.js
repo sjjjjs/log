@@ -2,7 +2,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import {
-    Navbar, NavbarGroup, Button, NavbarHeading, NavbarDivider, ButtonGroup
+    Navbar, NavbarGroup, Button, NavbarHeading, NavbarDivider, ButtonGroup, Classes
 } from '@blueprintjs/core';
 import getUrlUtil from 'util/getUrlUtil';
 
@@ -10,7 +10,7 @@ export default function NormalNavigator(props) {
     const { showBack = false, title = '', actions = [] } = props;
     const h = useHistory();
     return (
-        <Navbar style={{ userSelect: 'none'}}>
+        <Navbar className={Classes.DARK} style={{ userSelect: 'none'}}>
             <div>
                 <NavbarGroup align="left">
                     <ButtonGroup>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import {
-    Button, Classes, Switch, Position, Code, Popover, Menu, MenuItem
+    Button, Classes, Switch, Position, Code, Popover, Menu, MenuItem, ButtonGroup
 } from '@blueprintjs/core';
 import styles from './logDetail.module.css';
 import AppFrame from 'component/appFrame';
@@ -17,6 +17,8 @@ import getUrlUtil from 'util/getUrlUtil';
 import Ago from 'component/timeAgo';
 import DrawerEditor from 'component/drawerEditor';
 import { noop } from 'util/commonUtil';
+import { DatePicker } from '@blueprintjs/datetime';
+import dayjs from 'dayjs';
 
 const NavigationActions = (props) => {
     const h = useHistory();
@@ -24,35 +26,49 @@ const NavigationActions = (props) => {
     const { onAppendRequest = noop } = props;
     return (
         < >
-            <Popover content={
-                <Menu>
-                    <MenuItem
-                        icon="add" text="追加片段" label={<><Code>⌘</Code> + <Code>a</Code></>}
-                        onClick={onAppendRequest}
-                    />
-                    <MenuItem
-                        icon="annotation" text="编辑全部" label={<><Code>⌘</Code> + <Code>e</Code></>}
-                        onClick={() => h.push(getUrlUtil.getLogCreateUrl(params.id))}
-                    />
-                    <Menu.Divider />
-                    <MenuItem
-                        icon="delete" intent="danger" text="删除日志" label={<><Code>⌘</Code> + <Code>d</Code></>}
-                        onClick={() => {
-                            if (!window.confirm("确认删除？")) return;
-                            logService.del(params.id)
-                                .then(() => {
-                                    AppToaster.show({ timeout: 2000, message: '删除成功', intent: 'success' });
-                                    h.goBack();
-                                })
-                                .catch(err => {
-                                    alert(err.message);
-                                });
+            <ButtonGroup>
+                <Popover content={
+                    <DatePicker
+                        showActionsBar
+                        shortcuts
+                        highlightCurrentDay
+                        onChange={evt => {
+                            h.push(getUrlUtil.getAliaUrl(dayjs(evt).format('YYYYMMDD')))
                         }}
                     />
-                </Menu>
-            } position={Position.BOTTOM}>
-                <Button minimal icon="cog" />
-            </Popover>
+                }>
+                    <Button minimal icon="book" />
+                </Popover>
+                <Popover content={
+                    <Menu>
+                        <MenuItem
+                            icon="add" text="追加片段" label={<><Code>⌘</Code> + <Code>a</Code></>}
+                            onClick={onAppendRequest}
+                        />
+                        <MenuItem
+                            icon="annotation" text="编辑全部" label={<><Code>⌘</Code> + <Code>e</Code></>}
+                            onClick={() => h.push(getUrlUtil.getLogCreateUrl(params.id))}
+                        />
+                        <Menu.Divider />
+                        <MenuItem
+                            icon="delete" intent="danger" text="删除日志" label={<><Code>⌘</Code> + <Code>d</Code></>}
+                            onClick={() => {
+                                if (!window.confirm("确认删除？")) return;
+                                logService.del(params.id)
+                                    .then(() => {
+                                        AppToaster.show({ timeout: 2000, message: '删除成功', intent: 'success' });
+                                        h.goBack();
+                                    })
+                                    .catch(err => {
+                                        alert(err.message);
+                                    });
+                            }}
+                        />
+                    </Menu>
+                } position={Position.BOTTOM}>
+                    <Button minimal icon="cog" />
+                </Popover>
+            </ButtonGroup>
         </>
     );
 };
