@@ -110,7 +110,7 @@ export default function Alia() {
         <AppFrame header={
             <NormalNavigator
                 showBack={text !== 'm'}
-                title={<Button minimal icon="home" onClick={() => h.push(getUrlUtil.getLogUrl())}>日志首页</Button>}
+                title="暂未关联日志"
             />
         }>
             <div className={styles.container}>
