@@ -11,6 +11,8 @@
     "classnames": "^2.2.6",
     "dayjs": "^1.8.21",
     "dexie": "^2.0.4",
+    "dexie-observable": "^1.0.0-beta.6",
+    "dexie-syncable": "^1.0.0-beta.6",
     "gh-pages": "^2.2.0",
     "github-markdown-css": "^4.0.0",
     "normalize.css": "^8.0.1",
@@ -21,6 +23,7 @@
     "react-router-dom": "^5.1.2",
     "react-rte": "^0.16.1",
     "react-scripts": "3.4.0",
+    "sync-client": "^1.0.0-beta.11",
     "timeago-react": "^3.0.0",
     "typo.css": "^2.1.2"
   },

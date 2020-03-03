@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import {
-    Button, Classes, Switch, Position, Code, Popover, Menu, MenuItem, NavbarDivider
+    Button, Classes, Switch, Position, Code, Popover, Menu, MenuItem
 } from '@blueprintjs/core';
 import styles from './logDetail.module.css';
 import AppFrame from 'component/appFrame';
@@ -51,7 +51,7 @@ const NavigationActions = (props) => {
                     />
                 </Menu>
             } position={Position.BOTTOM}>
-                <Button icon="cog" />
+                <Button minimal icon="cog" />
             </Popover>
         </>
     );
@@ -59,7 +59,6 @@ const NavigationActions = (props) => {
 
 export default function LogDetail() {
     const params = useParams();
-    const h = useHistory();
     const [flag, setFlag] = useState(false);
     const [logData, setLogData] = useState(null);
     const [logCommentsData, setLogCommentsData] = useState([]);
@@ -87,23 +86,41 @@ export default function LogDetail() {
             header={
                 <NormalNavigator
                     showBack
-                    title={<Button icon="home" onClick={() => h.push(getUrlUtil.getLogUrl())}>日志首页</Button>}
+                    title={logData && <span className={Classes.TEXT_MUTED}><Ago time={logData.time} /></span>}
                     actions={
-                        < >
                         <NavigationActions onAppendRequest={() => setIsOpenAppendDrawerEditor(true)} />
-                        <NavbarDivider />
-                        <Switch style={{ marginBottom: 0, marginLeft: 5, marginRight: 5 }}
-                            label={<span>编辑</span>} checked={partialEdit} onChange={() => setPartialEdit(!partialEdit)}/>
-                        </>
                     }
                 />
             }
+            footer={
+                logData && logCommentsData && <NormalFooter>
+                    <div className={Classes.TEXT_MUTED}>
+                        <Button
+                            icon="comment"
+                            minimal
+                            onClick={() => {
+                                setCommentSource('');
+                                setIsOpenCommentDrawerEditor(true);
+                                setCommentRefId('');
+                            }}
+                        >
+                            评论<span>&nbsp;({logCommentsData ? logCommentsData.length : 0})</span>
+                        </Button>
+                    </div>
+                    <div className={styles.footerActions}>
+                       
+                        <Switch style={{ marginLeft: 5, marginBottom: 0 }}
+                            label={<span>编辑</span>} checked={partialEdit} onChange={() => setPartialEdit(!partialEdit)} />
+                    </div>
+                </NormalFooter>
+            }
         >
-            <div className={styles.container}>
-                <div className={styles.logContentBox}>
-                    <div className={styles.logContent}>
-                        {
-                            logData && <MarkdownPreview source={logData.content} selectAble={partialEdit} onSelect={
+            {
+                logData && logCommentsData &&
+                <div className={styles.container}>
+                    <div className={styles.logContentBox}>
+                        <div className={styles.logContent}>
+                            <MarkdownPreview source={logData.content} selectAble={partialEdit} onSelect={
                                 pos => {
                                     const partial = sliceCodeFromSource(logData.content, pos);
                                     setIsOpenPartialDrawerEditor(true);
@@ -111,55 +128,37 @@ export default function LogDetail() {
                                     setPosData(pos);
                                 }
                             } />
-                        }
+                        </div>
                     </div>
-                </div>
-                <NormalFooter>
-                    <div className={Classes.TEXT_MUTED}>
-                        日志创建于 {logData && <Ago time={logData.time} />}
-                    </div>
-                    <div className={Classes.TEXT_MUTED}>
-                        <span>累计 {logCommentsData ? logCommentsData.length : 0} 评论</span>
-                    </div>
-                </NormalFooter>
-                <div className={styles.commentBox}>
-                    <div className={styles.commentContent}>
-                        <LogComments
-                            list={logCommentsData}
-                            onRequestUpdate={c => {
-                                setCommentSource(c.content);
-                                setIsOpenCommentDrawerEditor(true);
-                                setCommentRefId(c.id);
-                            }}
-                            onRequestDelete={cid => {
-                                if (!window.confirm('你确定将此条记录删除吗？')) return;
-                                logCommentService.del(cid)
-                                    .then(() => {
-                                        AppToaster.show({
-                                            timeout: 2000,
-                                            message: '删除成功',
-                                            intent: 'success'
+                    <div className={styles.commentBox}>
+                        <div className={styles.commentContent}>
+                            <LogComments
+                                list={logCommentsData}
+                                onRequestUpdate={c => {
+                                    setCommentSource(c.content);
+                                    setIsOpenCommentDrawerEditor(true);
+                                    setCommentRefId(c.id);
+                                }}
+                                onRequestDelete={cid => {
+                                    if (!window.confirm('你确定将此条记录删除吗？')) return;
+                                    logCommentService.del(cid)
+                                        .then(() => {
+                                            AppToaster.show({
+                                                timeout: 2000,
+                                                message: '删除成功',
+                                                intent: 'success'
+                                            });
+                                            setFlag(!flag);
+                                        })
+                                        .catch(err => {
+                                            alert(err.message);
                                         });
-                                        setFlag(!flag);
-                                    })
-                                    .catch(err => {
-                                        alert(err.message);
-                                    });
-                            }}
-                        />
+                                }}
+                            />
+                        </div>
                     </div>
                 </div>
-                <NormalFooter noEffect>
-                    <Button
-                        icon="comment"
-                        onClick={() => {
-                            setCommentSource('');
-                            setIsOpenCommentDrawerEditor(true);
-                            setCommentRefId('');
-                        }}
-                    >添加评论</Button>
-                </NormalFooter>
-            </div>
+            }
             <DrawerEditor
                 title="编辑片段"
                 isOpen={isOpenPartialDrawerEditor}
@@ -187,7 +186,6 @@ export default function LogDetail() {
                 }}
                 onConfirm={() => {
                     setIsOpenAppendDrawerEditor(false);
-                    debugger
                     logService
                         .upd(logData.id, { content: logData.content + '\n\n' + appendSource })
                         .then(() => {
@@ -209,10 +207,10 @@ export default function LogDetail() {
                     let process;
                     if (commentRefId) {
                         process = logCommentService
-                        .upd(commentRefId, { content: commentSource });
+                            .upd(commentRefId, { content: commentSource });
                     } else {
                         process = logCommentService
-                        .add(logData.id, { content: commentSource });
+                            .add(logData.id, { content: commentSource });
                     }
                     process
                         .then(() => {

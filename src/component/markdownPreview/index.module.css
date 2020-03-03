@@ -3,3 +3,6 @@
     background-color: wheat;
     cursor: pointer;
 }
+.markdownBody > h2:first-child {
+    border-bottom-color: transparent;
+}
