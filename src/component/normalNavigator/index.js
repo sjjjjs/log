@@ -7,11 +7,11 @@ import {
 import getUrlUtil from 'util/getUrlUtil';
 
 export default function NormalNavigator(props) {
-    const { showBack = false, title = '', actions = [] } = props;
+    const { showBack = false, title = '', actions = null, leftActions = null } = props;
     const h = useHistory();
     return (
         <Navbar className={Classes.DARK} style={{ userSelect: 'none'}}>
-            <div>
+            <div style={{ maxWidth: 640, margin: 'auto' }}>
                 <NavbarGroup align="left">
                     <ButtonGroup>
                         {
@@ -24,9 +24,17 @@ export default function NormalNavigator(props) {
                         }
                         <Button minimal icon="home" onClick={() => h.push(getUrlUtil.getLogUrl())}></Button>
                     </ButtonGroup>
-                    <NavbarDivider />
                     {
-                        title !== '' && <NavbarHeading>{title}</NavbarHeading>
+                        leftActions && <>
+                            <NavbarDivider />
+                            {leftActions}
+                        </>
+                    }
+                    {
+                        title !== '' && <>
+                            <NavbarDivider />
+                            <NavbarHeading>{title}</NavbarHeading>
+                        </>
                     }
                 </NavbarGroup>
                 <NavbarGroup align="right">

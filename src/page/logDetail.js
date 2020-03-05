@@ -12,7 +12,7 @@ import { AppToaster } from 'util/toaster';
 import MarkdownPreview from 'component/markdownPreview';
 import { sliceCodeFromSource, replaceCodeFromSource } from 'util/sourcePosUtil';
 import NormalNavigator from 'component/normalNavigator';
-import NormalFooter from 'component/normalFooter';
+// import NormalFooter from 'component/normalFooter';
 import getUrlUtil from 'util/getUrlUtil';
 import Ago from 'component/timeAgo';
 import DrawerEditor from 'component/drawerEditor';
@@ -26,7 +26,6 @@ const NavigationActions = (props) => {
     const { onAppendRequest = noop } = props;
     return (
         < >
-            <ButtonGroup>
                 <Popover content={
                     <DatePicker
                         showActionsBar
@@ -68,7 +67,6 @@ const NavigationActions = (props) => {
                 } position={Position.BOTTOM}>
                     <Button minimal icon="cog" />
                 </Popover>
-            </ButtonGroup>
         </>
     );
 };
@@ -103,32 +101,25 @@ export default function LogDetail() {
                 <NormalNavigator
                     showBack
                     title={logData && <span className={Classes.TEXT_MUTED}><Ago time={logData.time} /></span>}
-                    actions={
-                        <NavigationActions onAppendRequest={() => setIsOpenAppendDrawerEditor(true)} />
+                    leftActions={
+                        <ButtonGroup>
+                            <Button
+                                icon="comment"
+                                minimal
+                                onClick={() => {
+                                    setCommentSource('');
+                                    setIsOpenCommentDrawerEditor(true);
+                                    setCommentRefId('');
+                                }}
+                            ></Button>
+                            <NavigationActions onAppendRequest={() => setIsOpenAppendDrawerEditor(true)} />
+                        </ButtonGroup>
                     }
-                />
-            }
-            footer={
-                logData && logCommentsData && <NormalFooter>
-                    <div className={Classes.TEXT_MUTED}>
-                        <Button
-                            icon="comment"
-                            minimal
-                            onClick={() => {
-                                setCommentSource('');
-                                setIsOpenCommentDrawerEditor(true);
-                                setCommentRefId('');
-                            }}
-                        >
-                            评论<span>&nbsp;({logCommentsData ? logCommentsData.length : 0})</span>
-                        </Button>
-                    </div>
-                    <div className={styles.footerActions}>
-                       
+                    actions={
                         <Switch style={{ marginLeft: 5, marginBottom: 0 }}
                             label={<span>编辑</span>} checked={partialEdit} onChange={() => setPartialEdit(!partialEdit)} />
-                    </div>
-                </NormalFooter>
+                    }
+                />
             }
         >
             {
