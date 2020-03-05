@@ -35,6 +35,7 @@ export default function(props) {
                             onSubmit();
                         }
                     }}
+                    style={{width: '100%', maxHeight: '65vh', resize: 'none'}}
                     onKeyDown={evt => {
                         if (evt.keyCode === 9) {
                             evt.preventDefault();

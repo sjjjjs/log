@@ -21,7 +21,6 @@ export default function DrawerEditor(props) {
             position={Position.BOTTOM}
             size="100%"
             onClose={onClose}
-            onConfirm={onConfirm}
             title={title}
         >
             <div
