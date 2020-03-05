@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import {
-    Button, Classes, Switch, Position, Code, Popover, Menu, MenuItem, ButtonGroup
+    Button, Classes, Switch, Position, Code, Popover, Menu, MenuItem, ButtonGroup, Tooltip
 } from '@blueprintjs/core';
 import styles from './logDetail.module.css';
 import AppFrame from 'component/appFrame';
@@ -116,8 +116,9 @@ export default function LogDetail() {
                         </ButtonGroup>
                     }
                     actions={
-                        <Switch style={{ marginLeft: 5, marginBottom: 0 }}
-                            label={<span>编辑</span>} checked={partialEdit} onChange={() => setPartialEdit(!partialEdit)} />
+                        <Tooltip content="片段编辑">
+                            <Switch style={{ marginLeft: 5, marginBottom: 0 }} checked={partialEdit} onChange={() => setPartialEdit(!partialEdit)} />
+                        </Tooltip>
                     }
                 />
             }
