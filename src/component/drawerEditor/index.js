@@ -25,7 +25,7 @@ export default function DrawerEditor(props) {
         >
             <div
                 className={Classes.DRAWER_BODY}
-                style={{ backgroundColor: '#ebf1f5', height: '100%', padding: '0 15px' }}
+                style={{ height: '100%', padding: '0 15px' }}
             >
                 <div style={{padding: '20px 0', maxWidth: 640, margin: 'auto'}}>
                     <MarkdownEditor

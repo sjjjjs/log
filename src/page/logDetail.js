@@ -17,8 +17,6 @@ import getUrlUtil from 'util/getUrlUtil';
 import Ago from 'component/timeAgo';
 import DrawerEditor from 'component/drawerEditor';
 import { noop } from 'util/commonUtil';
-import { DatePicker } from '@blueprintjs/datetime';
-import dayjs from 'dayjs';
 
 const NavigationActions = (props) => {
     const h = useHistory();
@@ -26,47 +24,35 @@ const NavigationActions = (props) => {
     const { onAppendRequest = noop } = props;
     return (
         < >
-                <Popover content={
-                    <DatePicker
-                        showActionsBar
-                        shortcuts
-                        highlightCurrentDay
-                        onChange={evt => {
-                            h.push(getUrlUtil.getAliaUrl(dayjs(evt).format('YYYYMMDD')))
+            <Popover content={
+                <Menu>
+                    <MenuItem
+                        icon="add" text="追加片段" label={<><Code>⌘</Code> + <Code>a</Code></>}
+                        onClick={onAppendRequest}
+                    />
+                    <MenuItem
+                        icon="annotation" text="编辑全部" label={<><Code>⌘</Code> + <Code>e</Code></>}
+                        onClick={() => h.push(getUrlUtil.getLogCreateUrl(params.id))}
+                    />
+                    <Menu.Divider />
+                    <MenuItem
+                        icon="delete" intent="danger" text="删除日志" label={<><Code>⌘</Code> + <Code>d</Code></>}
+                        onClick={() => {
+                            if (!window.confirm("确认删除？")) return;
+                            logService.del(params.id)
+                                .then(() => {
+                                    AppToaster.show({ timeout: 2000, message: '删除成功', intent: 'success' });
+                                    h.goBack();
+                                })
+                                .catch(err => {
+                                    alert(err.message);
+                                });
                         }}
                     />
-                }>
-                    <Button minimal icon="book" />
-                </Popover>
-                <Popover content={
-                    <Menu>
-                        <MenuItem
-                            icon="add" text="追加片段" label={<><Code>⌘</Code> + <Code>a</Code></>}
-                            onClick={onAppendRequest}
-                        />
-                        <MenuItem
-                            icon="annotation" text="编辑全部" label={<><Code>⌘</Code> + <Code>e</Code></>}
-                            onClick={() => h.push(getUrlUtil.getLogCreateUrl(params.id))}
-                        />
-                        <Menu.Divider />
-                        <MenuItem
-                            icon="delete" intent="danger" text="删除日志" label={<><Code>⌘</Code> + <Code>d</Code></>}
-                            onClick={() => {
-                                if (!window.confirm("确认删除？")) return;
-                                logService.del(params.id)
-                                    .then(() => {
-                                        AppToaster.show({ timeout: 2000, message: '删除成功', intent: 'success' });
-                                        h.goBack();
-                                    })
-                                    .catch(err => {
-                                        alert(err.message);
-                                    });
-                            }}
-                        />
-                    </Menu>
-                } position={Position.BOTTOM}>
-                    <Button minimal icon="cog" />
-                </Popover>
+                </Menu>
+            } position={Position.BOTTOM}>
+                <Button minimal icon="cog" text="操作" />
+            </Popover>
         </>
     );
 };
@@ -102,18 +88,21 @@ export default function LogDetail() {
                     showBack
                     title={logData && <span className={Classes.TEXT_MUTED}><Ago time={logData.time} /></span>}
                     leftActions={
-                        <ButtonGroup>
-                            <Button
-                                icon="comment"
-                                minimal
-                                onClick={() => {
-                                    setCommentSource('');
-                                    setIsOpenCommentDrawerEditor(true);
-                                    setCommentRefId('');
-                                }}
-                            ></Button>
+                        < >
+                            <ButtonGroup>
+                                <Button
+                                    icon="comment"
+                                    text="评论"
+                                    minimal
+                                    onClick={() => {
+                                        setCommentSource('');
+                                        setIsOpenCommentDrawerEditor(true);
+                                        setCommentRefId('');
+                                    }}
+                                ></Button>
+                            </ButtonGroup>
                             <NavigationActions onAppendRequest={() => setIsOpenAppendDrawerEditor(true)} />
-                        </ButtonGroup>
+                        </>
                     }
                     actions={
                         <Tooltip content="片段编辑">
