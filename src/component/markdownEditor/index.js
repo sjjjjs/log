@@ -23,19 +23,19 @@ export default function(props) {
         <div className={styles.container}>
             <div className={styles.editorBox}>
                 <TextArea
-                    inputRef={ref => setInputRef(ref)}
                     fill large
                     autoFocus
                     value={value}
                     growVertically
                     placeholder={placeholder}
+                    inputRef={ref => setInputRef(ref)}
+                    style={{width: '100%', maxHeight: '65vh', resize: 'none'}}
                     onChange={evt => onChange(evt.target.value)}
                     onKeyUp={evt => {
                         if (evt.keyCode === 13 && evt.altKey === true) {
                             onSubmit();
                         }
                     }}
-                    style={{width: '100%', maxHeight: '65vh', resize: 'none'}}
                     onKeyDown={evt => {
                         if (evt.keyCode === 9) {
                             evt.preventDefault();

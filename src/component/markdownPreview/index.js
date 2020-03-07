@@ -39,6 +39,7 @@ export default function MarkdownPreview(props) {
             )}
             onClick={evt => {
                 if (!props.selectAble || typeof props.onSelect !== 'function') return;
+                if (!evt.shiftKey) return;
                 evt.preventDefault();
                 const el = findTopLevelEle(evt.target);
                 if (!el) return;

@@ -3,10 +3,5 @@
     outline: none;
 }
 .container {
-    width: 640px;
-}
-.buttonWrap {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 10px;
+    width: 100%;
 }

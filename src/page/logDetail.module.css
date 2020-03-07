@@ -1,33 +1,51 @@
 
 .container {
-    padding-bottom: 20vh;
+    padding-bottom: 10vh;
+    overflow: hidden;
+    position: relative;
 }
 .logContentBox {
-    padding: 30px 0;
     display: flex;
     justify-content: center;
-    box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.1), 0 0 0 rgba(16, 22, 26, 0), 0 1px 1px rgba(16, 22, 26, 0.2);
+    margin: 30px 15px;
 }
 .logContent {
-    width: 640px;
-}
-.meta {
-    display: flex;
-    justify-content: flex-end;
-    padding-top: 20px;
-    padding-bottom: 15px;
+    max-width: 755px;
+    flex: 1 1 auto;
 }
 
 
 .commentBox {
     display: flex;
     justify-content: center;
-    margin: 10px 0;
+    margin: 10px 15px;
 }
 .commentContent {
-    width: 640px;
+    max-width: 755px;
+    flex: 1 1 auto;
 }
 .footerActions {
     display: flex;
     align-items: center;
+}
+
+.hide {
+    display: none;
+}
+
+.editorOuter {
+    padding: 30px 15px;
+    position: fixed;
+    z-index: 5;
+    top: 50px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(48,64,77,.9);
+    display: flex;
+    justify-content: center;
+}
+.editorInner {
+    max-width: 755px;
+    flex: 1 1 auto;
 }

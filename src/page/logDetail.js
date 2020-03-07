@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import {
-    Button, Classes, Switch, Position, Code, Popover, Menu, MenuItem, ButtonGroup, Tooltip
+    Button, Position, Popover, Menu, MenuItem, ButtonGroup
 } from '@blueprintjs/core';
 import styles from './logDetail.module.css';
 import AppFrame from 'component/appFrame';
@@ -11,118 +11,205 @@ import LogComments from 'component/logComments';
 import { AppToaster } from 'util/toaster';
 import MarkdownPreview from 'component/markdownPreview';
 import { sliceCodeFromSource, replaceCodeFromSource } from 'util/sourcePosUtil';
-import NormalNavigator from 'component/normalNavigator';
-// import NormalFooter from 'component/normalFooter';
-import getUrlUtil from 'util/getUrlUtil';
-import Ago from 'component/timeAgo';
-import DrawerEditor from 'component/drawerEditor';
-import { noop } from 'util/commonUtil';
+import names from 'classnames';
+import Editor from 'component/logEditor';
 
-const NavigationActions = (props) => {
-    const h = useHistory();
-    const params = useParams();
-    const { onAppendRequest = noop } = props;
-    return (
-        < >
-            <Popover content={
-                <Menu>
-                    <MenuItem
-                        icon="add" text="追加片段" label={<><Code>⌘</Code> + <Code>a</Code></>}
-                        onClick={onAppendRequest}
-                    />
-                    <MenuItem
-                        icon="annotation" text="编辑全部" label={<><Code>⌘</Code> + <Code>e</Code></>}
-                        onClick={() => h.push(getUrlUtil.getLogCreateUrl(params.id))}
-                    />
-                    <Menu.Divider />
-                    <MenuItem
-                        icon="delete" intent="danger" text="删除日志" label={<><Code>⌘</Code> + <Code>d</Code></>}
-                        onClick={() => {
-                            if (!window.confirm("确认删除？")) return;
-                            logService.del(params.id)
-                                .then(() => {
-                                    AppToaster.show({ timeout: 2000, message: '删除成功', intent: 'success' });
-                                    h.goBack();
-                                })
-                                .catch(err => {
-                                    alert(err.message);
-                                });
-                        }}
-                    />
-                </Menu>
-            } position={Position.BOTTOM}>
-                <Button minimal icon="cog" text="操作" />
-            </Popover>
-        </>
-    );
+
+const MODE = {
+    VIEW: '10001',
+    EDIT: '20001',
+    COMMENT: '30001',
+    APPEND: '40001',
+    COMMENT_EDIT: '50001',
+    PARTIAL_EDIT: '60001'
 };
 
 export default function LogDetail() {
+    const h = useHistory();
     const params = useParams();
-    const [flag, setFlag] = useState(false);
+    const [logFlag, setLogFlag] = useState(false);
+    const [commentsFlag, setCommentsFlag] = useState(false);
     const [logData, setLogData] = useState(null);
     const [logCommentsData, setLogCommentsData] = useState([]);
-    const [partialEdit, setPartialEdit] = useState(false);
-    const [isOpenPartialDrawerEditor, setIsOpenPartialDrawerEditor] = useState(false);
-    const [isOpenAppendDrawerEditor, setIsOpenAppendDrawerEditor] = useState(false);
-    const [isOpenCommentDrawerEditor, setIsOpenCommentDrawerEditor] = useState(false);
-    const [partialSource, setPartialSource] = useState('');
-    const [appendSource, setAppendSource] = useState('');
-    const [commentSource, setCommentSource] = useState('');
+    const [editSource, setEditSource] = useState('');
     const [commentRefId, setCommentRefId] = useState('');
     const [posData, setPosData] = useState(null);
+    const [mode, setMode] = useState(MODE.VIEW);
 
     useEffect(() => {
         async function fetchData() {
             const logInfo = await logService.get(params.id);
-            const logCommentsInfo = await logCommentService.all(params.id);
             setLogData(logInfo);
+        }
+        fetchData();
+    }, [params.id, logFlag]);
+    useEffect(() => {
+        async function fetchData() {
+            const logCommentsInfo = await logCommentService.all(params.id);
             setLogCommentsData(logCommentsInfo);
         }
         fetchData();
-    }, [params.id, flag]);
+    }, [params.id, commentsFlag]);
+
+    const viewAction = (
+        <Popover content={
+            <Menu>
+                <MenuItem
+                    icon="annotation" text="Edit"
+                    onClick={() => {
+                        setEditSource(logData.content);
+                        setMode(MODE.EDIT);
+                    }}
+                />
+                <MenuItem
+                    icon="add" text="Append"
+                    onClick={() => {
+                        setEditSource('');
+                        setMode(MODE.APPEND);
+                    }}
+                />
+                <MenuItem
+                    icon="comment" text="Comment"
+                    onClick={() => {
+                        setEditSource('');
+                        setCommentRefId('');
+                        setMode(MODE.COMMENT);
+                    }}
+                />
+                <Menu.Divider />
+                <MenuItem
+                    icon="delete" intent="danger" text="Delete"
+                    onClick={() => {
+                        if (!window.confirm("Please confirm DELETE item.")) return;
+                        logService.del(params.id)
+                            .then(() => {
+                                AppToaster.show({ timeout: 2000, message: '删除成功', intent: 'success' });
+                                h.goBack();
+                            })
+                            .catch(err => {
+                                alert(err.message);
+                            });
+                    }}
+                />
+            </Menu>
+        } position={Position.BOTTOM_RIGHT}>
+            <Button icon="cog" text="Operation" rightIcon="caret-down" />
+        </Popover>
+    );
+    const editAction = (
+        <ButtonGroup>
+            <Button icon="undo" text="Cancel" onClick={() => {
+                setMode(MODE.VIEW);
+                setEditSource('');
+            }} />
+            <Button icon="confirm" text="Confirm" intent="primary" onClick={() => {
+                logService.upd(params.id, {
+                    content: editSource
+                }).then(() => {
+                    setMode(MODE.VIEW);
+                    setEditSource('');
+                    setLogFlag(!logFlag);
+                });
+            }} />
+        </ButtonGroup>
+    );
+    const commentAction = (
+        <ButtonGroup>
+            <Button icon="undo" text="Cancel" onClick={() => {
+                setMode(MODE.VIEW);
+                setEditSource('');
+            }} />
+            <Button icon="confirm" text="Confirm" intent="primary" onClick={() => {
+                logCommentService.add(params.id, {
+                    content: editSource
+                }).then(() => {
+                    setEditSource('');
+                    setCommentRefId('');
+                    setCommentsFlag(!commentsFlag);
+                    setMode(MODE.VIEW);
+                });
+            }} />
+        </ButtonGroup>
+    );
+    const appendAction = (
+        <ButtonGroup>
+            <Button icon="undo" text="Cancel" onClick={() => {
+                setMode(MODE.VIEW);
+                setEditSource('');
+            }} />
+            <Button icon="confirm" text="Confirm" intent="primary" onClick={() => {
+                logService
+                    .upd(params.id, { content: logData.content + '\n\n' + editSource })
+                    .then(() => {
+                        setMode(MODE.VIEW);
+                        setEditSource('');
+                        setLogFlag(!logFlag);
+                    });
+            }} />
+        </ButtonGroup>
+    );
+    const commentEditAction = (
+        <ButtonGroup>
+            <Button icon="undo" text="Cancel" onClick={() => {
+                setMode(MODE.VIEW);
+                setEditSource('');
+                setCommentRefId('');
+            }} />
+            <Button icon="confirm" text="Confirm" intent="primary" onClick={() => {
+                logCommentService
+                    .upd(commentRefId, { content: editSource })
+                    .then(() => {
+                        setMode(MODE.VIEW);
+                        setEditSource('');
+                        setCommentRefId('');
+                        setCommentsFlag(!commentsFlag);
+                    });
+            }} />
+        </ButtonGroup>
+    );
+    const partialEditAction = (
+        <ButtonGroup>
+            <Button icon="undo" text="Cancel" onClick={() => {
+                setMode(MODE.VIEW);
+                setEditSource('');
+                setCommentRefId('');
+            }} />
+            <Button icon="confirm" text="Confirm" intent="primary" onClick={() => {
+                const source = replaceCodeFromSource(logData.content, posData, editSource);
+                logService
+                    .upd(params.id, { content: source })
+                    .then(() => {
+                        setMode(MODE.VIEW);
+                        setEditSource('');
+                        setLogFlag(!logFlag);
+                        setPosData(null);
+                    });
+            }} />
+        </ButtonGroup>
+    );
+    
     return (
         <AppFrame
-            header={
-                <NormalNavigator
-                    showBack
-                    title={logData && <span className={Classes.TEXT_MUTED}><Ago time={logData.time} /></span>}
-                    leftActions={
-                        < >
-                            <ButtonGroup>
-                                <Button
-                                    icon="comment"
-                                    text="评论"
-                                    minimal
-                                    onClick={() => {
-                                        setCommentSource('');
-                                        setIsOpenCommentDrawerEditor(true);
-                                        setCommentRefId('');
-                                    }}
-                                ></Button>
-                            </ButtonGroup>
-                            <NavigationActions onAppendRequest={() => setIsOpenAppendDrawerEditor(true)} />
-                        </>
-                    }
-                    actions={
-                        <Tooltip content="片段编辑">
-                            <Switch style={{ marginLeft: 5, marginBottom: 0 }} checked={partialEdit} onChange={() => setPartialEdit(!partialEdit)} />
-                        </Tooltip>
-                    }
-                />
+            actions={
+                (mode === MODE.APPEND && appendAction) ||
+                (mode === MODE.EDIT && editAction) ||
+                (mode === MODE.COMMENT && commentAction) ||
+                (mode === MODE.COMMENT_EDIT && commentEditAction) ||
+                (mode === MODE.PARTIAL_EDIT && partialEditAction) ||
+                viewAction
             }
         >
             {
                 logData && logCommentsData &&
-                <div className={styles.container}>
+                <div className={names(styles.container)}>
                     <div className={styles.logContentBox}>
                         <div className={styles.logContent}>
-                            <MarkdownPreview source={logData.content} selectAble={partialEdit} onSelect={
+                            <MarkdownPreview source={logData.content} selectAble onSelect={
                                 pos => {
                                     const partial = sliceCodeFromSource(logData.content, pos);
-                                    setIsOpenPartialDrawerEditor(true);
-                                    setPartialSource(partial);
+                                    setEditSource(partial);
                                     setPosData(pos);
+                                    setMode(MODE.PARTIAL_EDIT);
                                 }
                             } />
                         </div>
@@ -132,20 +219,15 @@ export default function LogDetail() {
                             <LogComments
                                 list={logCommentsData}
                                 onRequestUpdate={c => {
-                                    setCommentSource(c.content);
-                                    setIsOpenCommentDrawerEditor(true);
+                                    setEditSource(c.content);
                                     setCommentRefId(c.id);
+                                    setMode(MODE.COMMENT_EDIT);
                                 }}
                                 onRequestDelete={cid => {
-                                    if (!window.confirm('你确定将此条记录删除吗？')) return;
+                                    if (!window.confirm('Please confirm DELETE item.')) return;
                                     logCommentService.del(cid)
                                         .then(() => {
-                                            AppToaster.show({
-                                                timeout: 2000,
-                                                message: '删除成功',
-                                                intent: 'success'
-                                            });
-                                            setFlag(!flag);
+                                            setCommentsFlag(!commentsFlag);
                                         })
                                         .catch(err => {
                                             alert(err.message);
@@ -156,67 +238,16 @@ export default function LogDetail() {
                     </div>
                 </div>
             }
-            <DrawerEditor
-                title="编辑片段"
-                isOpen={isOpenPartialDrawerEditor}
-                onClose={() => {
-                    setIsOpenPartialDrawerEditor(false);
-                }}
-                onConfirm={() => {
-                    setIsOpenPartialDrawerEditor(false);
-                    const source = replaceCodeFromSource(logData.content, posData, partialSource);
-                    logService
-                        .upd(logData.id, { content: source })
-                        .then(() => {
-                            setFlag(!flag);
-                            setPartialEdit(false);
-                        });
-                }}
-                value={partialSource}
-                onChange={val => setPartialSource(val)}
-            />
-            <DrawerEditor
-                title="追加片段"
-                isOpen={isOpenAppendDrawerEditor}
-                onClose={() => {
-                    setIsOpenAppendDrawerEditor(false);
-                }}
-                onConfirm={() => {
-                    setIsOpenAppendDrawerEditor(false);
-                    logService
-                        .upd(logData.id, { content: logData.content + '\n\n' + appendSource })
-                        .then(() => {
-                            setFlag(!flag);
-                            setPartialEdit(false);
-                        });
-                }}
-                value={appendSource}
-                onChange={val => setAppendSource(val)}
-            />
-            <DrawerEditor
-                title={`${commentRefId ? '修改' : '发布'}评论`}
-                isOpen={isOpenCommentDrawerEditor}
-                onClose={() => {
-                    setIsOpenCommentDrawerEditor(false);
-                }}
-                onConfirm={() => {
-                    setIsOpenCommentDrawerEditor(false);
-                    let process;
-                    if (commentRefId) {
-                        process = logCommentService
-                            .upd(commentRefId, { content: commentSource });
-                    } else {
-                        process = logCommentService
-                            .add(logData.id, { content: commentSource });
-                    }
-                    process
-                        .then(() => {
-                            setFlag(!flag);
-                        });
-                }}
-                value={commentSource}
-                onChange={val => setCommentSource(val)}
-            />
+            {
+                mode !== MODE.VIEW && <div className={names(styles.editorOuter)}>
+                    <div className={styles.editorInner}>
+                        <Editor
+                            value={editSource}
+                            onChange={val => setEditSource(val)}
+                        />
+                    </div>
+                </div>
+            }
         </AppFrame>
     );
 }
