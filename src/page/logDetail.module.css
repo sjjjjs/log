@@ -7,7 +7,7 @@
 .logContentBox {
     display: flex;
     justify-content: center;
-    margin: 30px 15px;
+    margin: 0 15px;
 }
 .logContent {
     max-width: 755px;
