@@ -5,6 +5,9 @@
 .markdownBody > h2:first-child {
     border-bottom-color: transparent;
 }
+.markdownBody > :first-child {
+    margin-top: 0;
+}
 .markdownBody {
     padding: 0 15px;
 }

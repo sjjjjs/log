@@ -1,4 +1,7 @@
 import store from 'store/index';
+import impl from './logComment.remote';
+
+const curr = window.localStorage.getItem('HERO_BOOK_SETTING_DATA_SOURCE');
 
 const get = (id) => store.logComments.get(Number(id));
 
@@ -10,6 +13,6 @@ const upd = (id, logCommentInfo) => store.logComments.update(Number(id), logComm
 
 const all = (id) => store.logComments.where({ lid: Number(id) }).toArray();
 
-export default {
+export default curr === '2' ? impl : {
     get, add, del, upd, all
 }
