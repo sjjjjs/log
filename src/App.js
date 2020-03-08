@@ -5,6 +5,7 @@ import LogPage from './page/log';
 import LogCommentCreatePage from './page/logCommentCreate';
 import LogCreatePage from './page/logCreate';
 import LogDetailPage from './page/logDetail';
+import LogSetting from './page/setting';
 import 'normalize.css';
 import '@blueprintjs/core/lib/css/blueprint.css';
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
@@ -16,6 +17,7 @@ function App() {
         <Router>
             <Switch>
                 <Route path="/l/l" component={LogPage} />
+                <Route path="/l/s" component={LogSetting} />
                 <Route path="/l/d/:id" component={LogDetailPage} />
                 <Route path="/l/a/:text" component={AliaPage} />
                 <Route path="/l/ce/:id?" component={LogCreatePage} />
