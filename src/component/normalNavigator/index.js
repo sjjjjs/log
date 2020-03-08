@@ -5,8 +5,8 @@ import {
     Navbar, Button
 } from '@blueprintjs/core';
 import getUrlUtil from 'util/getUrlUtil';
-import dayjs from 'dayjs';
 import styles from './index.module.css';
+import dayjs from 'dayjs';
 
 export default function NormalNavigator(props) {
     const { actions = null } = props;
@@ -19,10 +19,13 @@ export default function NormalNavigator(props) {
                         <h3 >&lt;HeroBook /&gt;</h3>
                     </Navbar.Heading>
                     <Button icon="home" minimal text="Home" onClick={() => {
+                        h.push(getUrlUtil.getHome());
+                    }} />
+                    <Button icon="book" minimal text="List" onClick={() => {
                         h.push(getUrlUtil.getLogUrl());
                     }} />
-                    <Button icon="book" minimal text="Daily" onClick={() => {
-                        h.push(getUrlUtil.getAliaUrl(dayjs(Date.now()).format('YYYYMMDD')));
+                    <Button text="Today" minimal icon="pin" onClick={() => {
+                        h.push( getUrlUtil.getAliaUrl(dayjs(Date.now()).format('YYYYMMDD')));
                     }} />
                 </Navbar.Group>
                 { 

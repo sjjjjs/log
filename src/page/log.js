@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button } from '@blueprintjs/core';
+import { Button, Popover, Position } from '@blueprintjs/core';
+import { DatePicker } from '@blueprintjs/datetime';
 import styles from './log.module.css';
 import LogItem from 'component/logItem';
 import AppFrame from 'component/appFrame';
 import logService from 'service/log';
-import NormalNavigator from 'component/normalNavigator';
 import getUrlUtil from 'util/getUrlUtil';
+import dayjs from 'dayjs';
 
 export default function Log() {
     const h = useHistory();
@@ -19,13 +20,19 @@ export default function Log() {
         fetch();
     }, []);
     return (
-        <AppFrame header={
-            <NormalNavigator showBack title="日志管理" actions={
-                <Button
-                    minimal intent="primary" icon="annotation"
-                    onClick={() => h.push(getUrlUtil.getLogCreateUrl())}
-                >创建日志</Button>
-            } />
+        <AppFrame actions={
+            <Popover content={
+                <DatePicker
+                    showActionsBar
+                    shortcuts
+                    highlightCurrentDay
+                    onChange={evt => {
+                        evt && h.push( getUrlUtil.getAliaUrl(dayjs(evt).format('YYYYMMDD')));
+                    }}
+                />
+            } position={Position.BOTTOM_RIGHT}>
+                <Button text="Daily" minimal rightIcon="caret-down" />
+            </Popover>
         }>
             <div className={styles.container}>
                 {

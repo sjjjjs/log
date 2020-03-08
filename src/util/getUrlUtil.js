@@ -1,6 +1,7 @@
 
 export default {
-    getLogUrl: () => `/l`,
+    getHome: () => '/l',
+    getLogUrl: () => '/l/l',
     getLogDetailUrl: (id) => `/l/d/${id}`,
     getAliaUrl: text => `/l/a/${text}`,
     getLogCreateUrl: (id = '') => `/l/ce/${id}`,

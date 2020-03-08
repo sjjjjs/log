@@ -19,9 +19,7 @@ export default function (props) {
                 </span>
             </div>
             <Card elevation={Elevation.ONE} interactive onClick={() => h.push(getUrlUtil.getLogDetailUrl(props.id))}>
-                <div className={names("markdown-body", styles.markdownBody)}>
-                    <MarkdownPreview source={props.children} short />
-                </div>
+                <MarkdownPreview source={props.children} short />
             </Card>
         </div>
     );

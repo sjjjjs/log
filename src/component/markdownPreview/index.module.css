@@ -1,6 +1,6 @@
 .markdownBody > [data-sourcepos]:hover {
     background-color: #293742;
-    outline: 11px solid #293742;
+    outline: 5px solid #293742;
 }
 .markdownBody > h2:first-child {
     border-bottom-color: transparent;

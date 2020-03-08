@@ -2,6 +2,7 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import names from 'classnames';
 import styles from './index.module.css';
+import { Classes } from '@blueprintjs/core';
 
 const SEGMENT = '\n---';
 
@@ -32,7 +33,7 @@ export default function MarkdownPreview(props) {
     return (
         <div
             className={names(
-                "markdown-body",
+                Classes.RUNNING_TEXT,
                 className,
                 styles.markdownBody,
                 selectAble ? styles.active : ''
