@@ -23,7 +23,7 @@ export default function SettingPage(props) {
         <AppFrame>
             <div className={styles.container}>
             <RadioGroup
-                label="持久化方案："
+                label="Database"
                 selectedValue={value}
                 onChange={evt => {
                     const v = evt.target.value;
@@ -31,16 +31,16 @@ export default function SettingPage(props) {
                     setValue(v);
                 }}
             >
-                <Radio label="本地数据库" value={DATA_SOURCE_TYPES.LOCAL} />
-                <Radio label="远程数据库" value={DATA_SOURCE_TYPES.REMOTE} />
+                <Radio label="Local" value={DATA_SOURCE_TYPES.LOCAL} />
+                <Radio label="Remote" value={DATA_SOURCE_TYPES.REMOTE} />
             </RadioGroup>
             {
                 value === DATA_SOURCE_TYPES.REMOTE && <Card className={styles.indent}>
                     <FormGroup
                         inline
-                        label="接口地址"
+                        label="url"
                     >
-                        <InputGroup placeholder="请输入接口地址" value={remoteUrl}
+                        <InputGroup placeholder="place input url" value={remoteUrl}
                         onChange={evt => {
                             const v = evt.target.value;
                             window.localStorage.setItem(HERO_BOOK_SETTING_DATA_REMOTE_URL, v);
@@ -49,9 +49,9 @@ export default function SettingPage(props) {
                     </FormGroup>
                     <FormGroup
                         inline
-                        label="校验信息"
+                        label="validation"
                     >
-                        <InputGroup placeholder="请输入校验信息" value={remoteToken}
+                        <InputGroup placeholder="please input validation" value={remoteToken}
                         onChange={evt => {
                             const v = evt.target.value;
                             window.localStorage.setItem(HERO_BOOK_SETTING_DATA_REMOTE_TOKEN, v);

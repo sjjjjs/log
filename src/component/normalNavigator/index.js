@@ -19,6 +19,12 @@ export default function NormalNavigator(props) {
                     <Button minimal text="Home" onClick={() => {
                         h.push(getUrlUtil.getHome());
                     }} />
+                    <Button text="Today" minimal onClick={() => {
+                        h.push(getUrlUtil.getAliaUrl(dayjs(Date.now()).format('YYYYMMDD')));
+                    }} />
+                    <Button text="Setting" minimal onClick={() => {
+                        h.push(getUrlUtil.getSettingUrl());
+                    }} />
                     <Popover minimal content={
                         <DatePicker
                             showActionsBar
@@ -31,9 +37,6 @@ export default function NormalNavigator(props) {
                     } position={Position.BOTTOM_RIGHT}>
                         <Button text="Daily" minimal rightIcon="caret-down" />
                     </Popover>
-                    <Button text="Today" minimal onClick={() => {
-                        h.push( getUrlUtil.getAliaUrl(dayjs(Date.now()).format('YYYYMMDD')));
-                    }} />
                 </Navbar.Group>
                 { 
                     actions && <Navbar.Group align="right">
