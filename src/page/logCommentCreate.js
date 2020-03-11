@@ -34,7 +34,7 @@ export default function LogCommentCreate() {
     return (
         <AppFrame header={
             <NormalNavigation showBack title="评论" actions={
-                <Button minimal icon="confirm" intent="primary" onClick={() => {
+                <Button minimal intent="primary" onClick={() => {
                     let process;
                     if (isNew) {
                         process = logCommentService.add(id, {

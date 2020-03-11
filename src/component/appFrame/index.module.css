@@ -2,6 +2,8 @@
 .container {
     position: relative;
     overflow: hidden;
+    background-color: ghostwhite;
+    min-height: 100%;
 }
 
 .body {

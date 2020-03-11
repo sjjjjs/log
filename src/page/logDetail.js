@@ -12,7 +12,7 @@ import { AppToaster } from 'util/toaster';
 import MarkdownPreview from 'component/markdownPreview';
 import { sliceCodeFromSource, replaceCodeFromSource } from 'util/sourcePosUtil';
 import names from 'classnames';
-import Editor from 'component/logEditor';
+import Editor from 'component/markdownEditor';
 
 
 const MODE = {
@@ -52,33 +52,18 @@ export default function LogDetail() {
     }, [params.id, commentsFlag]);
 
     const viewAction = (
-        <Popover content={
+        <Popover minimal content={
             <Menu>
                 <MenuItem
-                    icon="annotation" text="Edit"
-                    onClick={() => {
-                        setEditSource(logData.content);
-                        setMode(MODE.EDIT);
-                    }}
-                />
-                <MenuItem
-                    icon="add" text="Append"
+                    text="Append"
                     onClick={() => {
                         setEditSource('');
                         setMode(MODE.APPEND);
                     }}
                 />
-                <MenuItem
-                    icon="comment" text="Comment"
-                    onClick={() => {
-                        setEditSource('');
-                        setCommentRefId('');
-                        setMode(MODE.COMMENT);
-                    }}
-                />
                 <Menu.Divider />
                 <MenuItem
-                    icon="delete" intent="danger" text="Delete"
+                    intent="danger" text="Delete"
                     onClick={() => {
                         if (!window.confirm("Please confirm DELETE item.")) return;
                         logService.del(params.id)
@@ -93,16 +78,27 @@ export default function LogDetail() {
                 />
             </Menu>
         } position={Position.BOTTOM_RIGHT}>
-            <Button icon="cog" text="Operation" rightIcon="caret-down" />
+            <ButtonGroup>
+                <Button minimal text="Edit" onClick={() => {
+                    setEditSource(logData.content);
+                    setMode(MODE.EDIT);
+                }} />
+                <Button minimal text="Note" onClick={() => {
+                    setEditSource('');
+                    setCommentRefId('');
+                    setMode(MODE.COMMENT);
+                }} />
+                <Button minimal rightIcon="caret-down" />
+            </ButtonGroup>
         </Popover>
     );
     const editAction = (
         <ButtonGroup>
-            <Button icon="undo" text="Cancel" onClick={() => {
+            <Button minimal text="Undo" onClick={() => {
                 setMode(MODE.VIEW);
                 setEditSource('');
             }} />
-            <Button icon="confirm" text="Confirm" intent="primary" onClick={() => {
+            <Button minimal text="Okay" intent="primary" onClick={() => {
                 logService.upd(params.id, {
                     content: editSource
                 }).then(() => {
@@ -115,11 +111,11 @@ export default function LogDetail() {
     );
     const commentAction = (
         <ButtonGroup>
-            <Button icon="undo" text="Cancel" onClick={() => {
+            <Button minimal text="Undo" onClick={() => {
                 setMode(MODE.VIEW);
                 setEditSource('');
             }} />
-            <Button icon="confirm" text="Confirm" intent="primary" onClick={() => {
+            <Button minimal text="Okay" intent="primary" onClick={() => {
                 logCommentService.add(params.id, {
                     content: editSource
                 }).then(() => {
@@ -133,11 +129,11 @@ export default function LogDetail() {
     );
     const appendAction = (
         <ButtonGroup>
-            <Button icon="undo" text="Cancel" onClick={() => {
+            <Button minimal text="Undo" onClick={() => {
                 setMode(MODE.VIEW);
                 setEditSource('');
             }} />
-            <Button icon="confirm" text="Confirm" intent="primary" onClick={() => {
+            <Button minimal text="Okay" intent="primary" onClick={() => {
                 logService
                     .upd(params.id, { content: logData.content + '\n\n' + editSource })
                     .then(() => {
@@ -150,12 +146,12 @@ export default function LogDetail() {
     );
     const commentEditAction = (
         <ButtonGroup>
-            <Button icon="undo" text="Cancel" onClick={() => {
+            <Button minimal text="Undo" onClick={() => {
                 setMode(MODE.VIEW);
                 setEditSource('');
                 setCommentRefId('');
             }} />
-            <Button icon="confirm" text="Confirm" intent="primary" onClick={() => {
+            <Button minimal text="Okay" intent="primary" onClick={() => {
                 logCommentService
                     .upd(commentRefId, { content: editSource })
                     .then(() => {
@@ -169,12 +165,12 @@ export default function LogDetail() {
     );
     const partialEditAction = (
         <ButtonGroup>
-            <Button icon="undo" text="Cancel" onClick={() => {
+            <Button minimal text="Undo" onClick={() => {
                 setMode(MODE.VIEW);
                 setEditSource('');
                 setCommentRefId('');
             }} />
-            <Button icon="confirm" text="Confirm" intent="primary" onClick={() => {
+            <Button minimal text="Okay" intent="primary" onClick={() => {
                 const source = replaceCodeFromSource(logData.content, posData, editSource);
                 logService
                     .upd(params.id, { content: source })
@@ -240,12 +236,10 @@ export default function LogDetail() {
             }
             {
                 mode !== MODE.VIEW && <div className={names(styles.editorOuter)}>
-                    <div className={styles.editorInner}>
-                        <Editor
-                            value={editSource}
-                            onChange={val => setEditSource(val)}
-                        />
-                    </div>
+                    <Editor
+                        value={editSource}
+                        onChange={val => setEditSource(val)}
+                    />
                 </div>
             }
         </AppFrame>

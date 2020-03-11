@@ -35,7 +35,7 @@ export default function LogCreate() {
     return (
         <AppFrame header={
             <NormalNavigator showBack actions={
-                <Button minimal intent="primary" icon="confirm" onClick={() => {
+                <Button minimal intent="primary" onClick={() => {
                     let process;
                     if (isNew) {
                         process = logService.add({

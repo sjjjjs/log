@@ -2,7 +2,7 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import names from 'classnames';
 import styles from './index.module.css';
-import { Classes } from '@blueprintjs/core';
+import { Card } from '@blueprintjs/core';
 
 const SEGMENT = '\n---';
 
@@ -31,27 +31,29 @@ export default function MarkdownPreview(props) {
     const sepIdx = source.indexOf(SEGMENT);
     const title = sepIdx > 0 ? source.slice(0, sepIdx) : '';
     return (
-        <div
-            className={names(
-                Classes.RUNNING_TEXT,
-                className,
-                styles.markdownBody,
-                selectAble ? styles.active : ''
-            )}
-            onClick={evt => {
-                if (!props.selectAble || typeof props.onSelect !== 'function') return;
-                if (!evt.shiftKey) return;
-                evt.preventDefault();
-                const el = findTopLevelEle(evt.target);
-                if (!el) return;
-                const sourcePosStr = el.getAttribute('data-sourcePos');
-                props.onSelect(sourcePosStr);
-            }}
-        >
-            <ReactMarkdown
-                source={props.short ? (title || source) : source}
-                sourcePos={selectAble}
-            />
-        </div>
+        <Card>
+            <div
+                className={names(
+                    "markdown-body",
+                    className,
+                    styles.markdownBody,
+                    selectAble ? styles.active : ''
+                )}
+                onClick={evt => {
+                    if (!props.selectAble || typeof props.onSelect !== 'function') return;
+                    if (!evt.shiftKey) return;
+                    evt.preventDefault();
+                    const el = findTopLevelEle(evt.target);
+                    if (!el) return;
+                    const sourcePosStr = el.getAttribute('data-sourcePos');
+                    props.onSelect(sourcePosStr);
+                }}
+            >
+                <ReactMarkdown
+                    source={props.short ? (title || source) : source}
+                    sourcePos={selectAble}
+                />
+            </div>
+        </Card>
     );
 }

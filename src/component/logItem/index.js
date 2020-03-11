@@ -3,7 +3,7 @@
 import React from 'react';
 import TimeAgo from 'timeago-react';
 import { useHistory } from 'react-router-dom';
-import { Card, Classes, Elevation } from '@blueprintjs/core';
+import { Classes } from '@blueprintjs/core';
 import names from 'classnames';
 import styles from './index.module.css';
 import MarkdownPreview from 'component/markdownPreview';
@@ -18,9 +18,9 @@ export default function (props) {
                     <TimeAgo datetime={props.date} locale='zh_CN' />
                 </span>
             </div>
-            <Card elevation={Elevation.ONE} interactive onClick={() => h.push(getUrlUtil.getLogDetailUrl(props.id))}>
+            <div onClick={() => h.push(getUrlUtil.getLogDetailUrl(props.id))}>
                 <MarkdownPreview source={props.children} short />
-            </Card>
+            </div>
         </div>
     );
 }

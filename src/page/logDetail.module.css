@@ -35,18 +35,13 @@
 }
 
 .editorOuter {
-    padding: 30px 15px;
     position: fixed;
     z-index: 5;
     top: 50px;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(48,64,77,.9);
+    background-color: #ffffff;
     display: flex;
     justify-content: center;
-}
-.editorInner {
-    max-width: 755px;
-    flex: 1 1 auto;
 }

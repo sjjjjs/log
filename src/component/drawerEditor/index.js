@@ -14,7 +14,6 @@ export default function DrawerEditor(props) {
     } = props;
     return (
         <Drawer
-            icon="annotation"
             autoFocus
             hasBackdrop
             isOpen={isOpen}
@@ -42,7 +41,6 @@ export default function DrawerEditor(props) {
                         alignItems: 'center'
                     }}>
                         <Button
-                            icon="confirm"
                             intent="primary"
                             className={Classes.DIALOG_CLOSE_BUTTON}
                             onClick={onConfirm}

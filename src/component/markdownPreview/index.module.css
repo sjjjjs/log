@@ -1,6 +1,19 @@
-.markdownBody > [data-sourcepos]:hover {
-    background-color: #293742;
-    outline: 5px solid #293742;
+.markdownBody > [data-sourcepos]:hover::before {
+    background-color: #ffe4c46e;
+}
+.markdownBody > [data-sourcepos] {
+    position: relative;
+}
+.markdownBody > [data-sourcepos]::before {
+    content: " ";
+    position: absolute;
+    top: 0;
+    left: -10px;
+    height: 100%;
+    width: 3px;
+    background-color: transparent;
+    border-radius: 1.5px;
+    transition: background-color 350ms ease-in-out;
 }
 .markdownBody > h2:first-child {
     border-bottom-color: transparent;
@@ -9,5 +22,5 @@
     margin-top: 0;
 }
 .markdownBody {
-    padding: 0 15px;
+    padding: 15px;
 }

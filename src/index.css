@@ -1,13 +1,8 @@
 
 html, body, #root {
-  min-height: 100%;
-  background-color: #30404d;
+  height: 100%;
 }
 body {
   margin: 0;
   position: relative;
-}
-
-.markdown-body {
-  color: inherit !important;
 }

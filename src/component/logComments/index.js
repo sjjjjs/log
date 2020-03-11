@@ -18,7 +18,7 @@ function LogComment(props) {
                     <span className={styles.commentMetaItem}><Ago time={c.time} /></span>
                 </div>
                 <div className={names(styles.commentMetaBlock, styles.hoverVisible)}>
-                    <Popover content={
+                    <Popover minimal content={
                         <ButtonGroup>
                             <Button minimal onClick={() => onRequestUpdate(c)}>编辑</Button>
                             <Divider />
