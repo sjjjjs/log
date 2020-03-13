@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown from 'react-markdown/with-html';
 import names from 'classnames';
 import styles from './index.module.css';
 import { Card } from '@blueprintjs/core';
@@ -52,6 +52,8 @@ export default function MarkdownPreview(props) {
                 <ReactMarkdown
                     source={props.short ? (title || source) : source}
                     sourcePos={selectAble}
+                    escapeHtml={false}
+                    linkTarget="_blank"
                 />
             </div>
         </Card>

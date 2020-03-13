@@ -6,8 +6,7 @@ const options = {
     selectOnLineNumbers: true,
     roundedSelection: false,
     readOnly: false,
-    cursorStyle: "line",
-    automaticLayout: false
+    wordWrap: 'on'
 };
 
 export default function (props) {
@@ -17,7 +16,7 @@ export default function (props) {
     } = props;
     return (
         <MonacoEditor
-            language="javascript"
+            language="markdown"
             value={value}
             options={options}
             onChange={val => onChange(val)}

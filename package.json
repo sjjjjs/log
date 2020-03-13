@@ -29,6 +29,9 @@
     "react-router-dom": "^5.1.2",
     "react-rte": "^0.16.1",
     "react-scripts": "3.4.0",
+    "remark-autolink-headings": "^5.2.2",
+    "remark-containers": "^1.1.2",
+    "remark-toc": "^7.0.0",
     "sync-client": "^1.0.0-beta.11",
     "timeago-react": "^3.0.0",
     "typo.css": "^2.1.2"
